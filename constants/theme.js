@@ -3,7 +3,8 @@ const { width, height } = Dimensions.get("window");
 
 export const COLORS = {
     // base colors
-    primary: "#FC6D3F", // orange
+    primary: "#4A980F", // green
+    lightGreen: "#D1EC8D",
     secondary: "#CDCDD2",   // gray
 
     // colors
@@ -15,7 +16,15 @@ export const COLORS = {
     lightGray3: "#EFEFF1",
     lightGray4: "#F8F8F9",
     transparent: "transparent",
-    darkgray: '#898C95',
+    darkgray: '#636469',
+    
+    accent: '#D8211B',
+    red: '#cc1812',
+    deepRed2: '#630118',
+
+
+
+    blue: "#2D88FF",
 };
 
 export const SIZES = {
@@ -27,6 +36,7 @@ export const SIZES = {
     padding2: 12,
 
     // font sizes
+    logoName: 50,
     largeTitle: 50,
     h1: 30,
     h2: 22,
@@ -44,6 +54,7 @@ export const SIZES = {
 };
 
 export const FONTS = {
+    logoName: {fontFamily: "cassannet",fontWeight: 'bold', fontSize: SIZES.logoName, lineHeight: 55},
     largeTitle: { fontFamily: "Roboto-regular", fontSize: SIZES.largeTitle, lineHeight: 55 },
     h1: { fontFamily: "Roboto-Black", fontWeight: 'bold', fontSize: SIZES.h1, lineHeight: 36 },
     h2: { fontFamily: "Roboto-Bold",fontWeight: 'bold', fontSize: SIZES.h2, lineHeight: 30 },

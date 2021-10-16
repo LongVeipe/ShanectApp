@@ -11,7 +11,7 @@ const Splash = ({navigation}) => {
                 source={animations.splash}
                 loop={false}
                 autoPlay
-                onAnimationFinish={() => navigation.navigate("Login")}
+                onAnimationFinish={() => navigation.replace("Login")}
             />
         </SafeAreaView>
     )
