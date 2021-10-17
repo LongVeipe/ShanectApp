@@ -7,6 +7,9 @@ export const COLORS = {
     lightGreen: "#D1EC8D",
     secondary: "#CDCDD2",   // gray
 
+    logoViolet: "#351CC6",
+    logoPink: "#C74A93",
+
     // colors
     black: "#1E1F20",
     white: "#FFFFFF",

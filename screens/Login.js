@@ -6,6 +6,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {SIZES, images, COLORS, FONTS, icons} from '../constants';
 import {Button} from 'react-native-elements';
+import Animated from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
 
 const Login = () => {
@@ -46,14 +47,29 @@ const Login = () => {
         colors={[COLORS.primary, COLORS.lightGreen, COLORS.lightGreen]}
         style={styles.logoBox}>
         <Image style={styles.logo} source={images.logo2} />
-        <Text
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}
+        >
+          <Text
+            style={{
+              ...FONTS.logoName,
+              color: COLORS.logoViolet,
+              marginTop: SIZES.padding,
+            }}>
+            SHA
+          </Text>
+          <Text
           style={{
             ...FONTS.logoName,
-            color: COLORS.darkgray,
+            color: COLORS.logoPink,
             marginTop: SIZES.padding,
           }}>
-          SHANECT
+          NECT
         </Text>
+        </View>
       </LinearGradient>
       <View style={styles.loginBox}>
         <ButtonChooseLoginType
