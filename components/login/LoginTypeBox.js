@@ -77,7 +77,10 @@ export default LoginTypeBox;
 const styles = StyleSheet.create({
   loginBox: {
     paddingHorizontal: SIZES.padding * 2,
-    paddingBottom: SIZES.height * 0.2,
+    paddingBottom: SIZES.height * 0.15,
+    position: 'absolute',
+    left: 0,
+    right: 0,
   },
   buttonChooseLoginType: {
     borderRadius: SIZES.radius,

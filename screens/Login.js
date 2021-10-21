@@ -3,7 +3,7 @@ import {TouchableOpacity, StyleSheet, Text, View} from 'react-native';
 import {Image} from 'react-native-elements';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import { COLORS } from '../constants'
-import {LoginTypeBox, IconBackground} from '../components/login'
+import {LoginTypeBox, IconBackground, ShanectLoginForm} from '../components/login'
 
 const Login = () => {
   
@@ -12,6 +12,7 @@ const Login = () => {
     <SafeAreaView style={styles.container}>
       <IconBackground/>
       <LoginTypeBox/>
+      <ShanectLoginForm/>
     </SafeAreaView>
   );
 };

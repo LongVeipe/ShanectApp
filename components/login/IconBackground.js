@@ -7,7 +7,7 @@ const IconBackground = () => {
   return (
     <LinearGradient
       colors={[COLORS.primary, COLORS.lightGreen, COLORS.lightGreen]}
-      style={styles.logoBox}>
+      style={styles.container}>
       <Image style={styles.logo} source={images.logo2} />
       <View
         style={{
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 3,
   },
-  logoBox: {
+  container: {
     position: 'absolute',
     left: 0,
     top: 0,
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     flexDirection: 'column',
     alignItems: 'center',
-    paddingTop: SIZES.height * 0.2,
+    paddingTop: SIZES.height * 0.15,
   },
   logo: {
     width: SIZES.width * 0.25,
