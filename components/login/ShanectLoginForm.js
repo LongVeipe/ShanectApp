@@ -12,15 +12,38 @@ import {CheckBox, Input} from 'react-native-elements';
 import {COLORS, FONTS, SIZES} from '../../constants';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {rememberPassword} from '../../redux/reducers/loginActions';
+import Animated, {interpolate, Extrapolate} from 'react-native-reanimated';
 
 const ShanectLoginForm = props => {
   const dispatch = useDispatch();
   const isRememberPassword = useSelector(state => {
     return state.loginReducer.isRememberPassword;
   });
+  const buttonOpacity = useSelector(state => state.loginReducer.buttonOpacity);
+  const formY = buttonOpacity.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, SIZES.height * 0.5],
+    extrapolate: Extrapolate.CLAMP,
+  });
+  const formOpacity = buttonOpacity.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, 0],
+    extrapolate: Extrapolate.CLAMP,
+  });
+  const formZIndex = buttonOpacity.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, -1],
+    extrapolate: Extrapolate.CLAMP,
+  });
 
   return (
-    <View style={styles.container}>
+    <Animated.View
+      style={{
+        ...styles.container,
+        zIndex: formZIndex,
+        opacity: formOpacity,
+        transform: [{translateY: formY}],
+      }}>
       <Input
         placeholder="Tên đăng nhập"
         label="Tên đăng nhập"
@@ -61,14 +84,15 @@ const ShanectLoginForm = props => {
           checked={isRememberPassword}
           onPress={() => dispatch(rememberPassword())}
         />
-        <TouchableOpacity style={{position: 'absolute', right: 0, marginRight: SIZES.padding}}>
+        <TouchableOpacity
+          style={{position: 'absolute', right: 0, marginRight: SIZES.padding}}>
           <Text style={styles.forgotPassText}>Quên mật khẩu?</Text>
         </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.loginButton}>
         <Text style={styles.loginText}>ĐĂNG NHẬP</Text>
       </TouchableOpacity>
-    </View>
+    </Animated.View>
   );
 };
 
@@ -83,10 +107,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    zIndex: -1
   },
-  textInput: {
-  },
+  textInput: {},
   shadow: {
     shadowColor: '#000',
     shadowOffset: {
