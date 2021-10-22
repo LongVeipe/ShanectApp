@@ -1,10 +1,11 @@
 import LoginTypeBox from './LoginTypeBox'
-import IconBackground from './IconBackground'
+import LoginBackground from './LoginBackground'
 import ShanectLoginForm from './ShanectLoginForm'
+import Logo from './Logo'
 
 export {
     LoginTypeBox,
-    IconBackground,
+    LoginBackground,
     ShanectLoginForm,
-    
+    Logo,
 }

@@ -29,6 +29,14 @@ let loginReducer = (state = defaultState, action) => {
         ...state,
         isRememberPassword: !state.isRememberPassword,
       }
+      break;
+    case ACTION_TYPES.CLOSE_LOGIN_FORM:
+      console.log("ok")
+      newState = {
+        ...state,
+        buttonOpacity: action.buttonOpacity,
+      }
+      break;
     default:
       break;
   }

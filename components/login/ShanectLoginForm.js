@@ -13,6 +13,7 @@ import {COLORS, FONTS, SIZES} from '../../constants';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {rememberPassword} from '../../redux/reducers/loginActions';
 import Animated, {interpolate, Extrapolate} from 'react-native-reanimated';
+import {TapGestureHandler} from 'react-native-gesture-handler';
 
 const ShanectLoginForm = props => {
   const dispatch = useDispatch();
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.white,
     paddingHorizontal: SIZES.padding * 2,
-    paddingTop: SIZES.padding * 2,
+    // paddingTop: SIZES.padding * 2,
     paddingBottom: SIZES.padding * 4,
     position: 'absolute',
     left: 0,
@@ -125,12 +126,19 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   loginButton: {
+    backgroundColor: COLORS.white,
     borderRadius: SIZES.radius,
-    borderColor: COLORS.black,
-    borderWidth: 1,
     paddingVertical: SIZES.padding,
     marginHorizontal: SIZES.padding * 2,
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 3,
   },
   loginText: {
     ...FONTS.body3,

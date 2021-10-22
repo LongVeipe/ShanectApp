@@ -7,3 +7,12 @@ export function rememberPassword(){
 
     }
 }
+
+export function closeLoginForm(buttonOpacity){
+    return{
+        type: ACTION_TYPES.CLOSE_LOGIN_FORM,
+        payload:{
+            buttonOpacity,
+        }
+    }
+}
