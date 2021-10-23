@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -16,6 +16,7 @@ import Animated, {interpolate, Extrapolate} from 'react-native-reanimated';
 import {TapGestureHandler} from 'react-native-gesture-handler';
 
 const ShanectLoginForm = props => {
+  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const isRememberPassword = useSelector(state => {
     return state.loginReducer.isRememberPassword;
@@ -47,12 +48,12 @@ const ShanectLoginForm = props => {
       }}>
       <Input
         placeholder="Tên đăng nhập"
-        label="Tên đăng nhập"
         leftIcon={
-          <FontAwesome name="user" size={24} style={{color: COLORS.black}} />
+          <FontAwesome name="user" size={20} style={{color: COLORS.darkPink}} />
         }
         inputStyle={{
           color: COLORS.black,
+          ...FONTS.body3,
         }}
         style={{
           height: 20,
@@ -60,16 +61,24 @@ const ShanectLoginForm = props => {
       />
       <Input
         placeholder="Mật khẩu"
-        label="Mật khẩu"
-        secureTextEntry={true}
+        secureTextEntry={showPassword}
         leftIcon={
-          <FontAwesome name="lock" size={24} style={{color: COLORS.black}} />
+          <FontAwesome name="lock" size={20} style={{color: COLORS.darkPink}} />
         }
         rightIcon={
-          <FontAwesome name="eye" size={24} style={{color: COLORS.black}} />
+          <TouchableOpacity>
+            <FontAwesome
+              name={showPassword? "eye":"eye-slash"}
+              size={20}
+              style={{color: COLORS.black}}
+              onPress={() => setShowPassword(!showPassword)}
+            />
+          </TouchableOpacity>
         }
         inputStyle={{
+          marginLeft: SIZES.padding,
           color: COLORS.black,
+          ...FONTS.body3,
         }}
         containerStyle={styles.textInput}
       />
@@ -81,8 +90,10 @@ const ShanectLoginForm = props => {
         }}>
         <CheckBox
           title="Nhớ mật khẩu"
-          containerStyle={styles.checkBox}
+          containerStyle={{...styles.checkBox}}
+          textStyle={{fontWeight: isRememberPassword? 'bold':'normal'}}
           checked={isRememberPassword}
+          checkedColor={COLORS.darkPink}
           onPress={() => dispatch(rememberPassword())}
         />
         <TouchableOpacity
@@ -93,6 +104,12 @@ const ShanectLoginForm = props => {
       <TouchableOpacity style={styles.loginButton}>
         <Text style={styles.loginText}>ĐĂNG NHẬP</Text>
       </TouchableOpacity>
+      <View style={styles.register}>
+        <Text>Bạn chưa có tài khoản?</Text>
+        <TouchableOpacity style={{marginLeft: SIZES.padding}}>
+          <Text style={{textDecorationLine: 'underline'}}>Đăng ký</Text>
+        </TouchableOpacity>
+      </View>
     </Animated.View>
   );
 };
@@ -147,5 +164,11 @@ const styles = StyleSheet.create({
   },
   forgotPassText: {
     textDecorationLine: 'underline',
+  },
+  register: {
+    flexDirection: 'row',
+    marginTop: SIZES.padding * 2,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

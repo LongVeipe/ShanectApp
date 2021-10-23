@@ -5,6 +5,7 @@ export const COLORS = {
     // base colors
     primary: "#c55880", // pink
     lightPink: "#e0a4b9",
+    darkPink: '#9b365b',
     secondary: "#D37E9C",   
 
     logoViolet: "#351CC6",
