@@ -85,17 +85,16 @@ const LoginTypeBox = () => {
             style={{
               ...styles.buttonChooseLoginType,
               // ...styles.shadow,
-              backgroundColor: props.backgroundColor,
             }}
             onPress={() => onOpenLoginForm(props.icon)}>
-            <View style={{marginRight: SIZES.padding * 2}}>
+            <View style={{marginRight: SIZES.padding * 2, opacity: 0.7}}>
               {props.icon === 'shanect' ? (
-                <Image source={images.logo} style={{width: 20, height: 20}} />
+                <Image source={images.logo_white} style={{width: 20, height: 20,}} />
               ) : (
                 <FontAwesome
                   name={props.icon}
                   size={20}
-                  color={props.foregroundColor}
+                  color={COLORS.white}
                 />
               )}
             </View>
@@ -103,7 +102,8 @@ const LoginTypeBox = () => {
               style={{
                 ...FONTS.body4,
                 fontWeight: 'bold',
-                color: props.foregroundColor,
+                color: COLORS.white,
+                opacity: 0.8,
               }}>
               {props.title}
             </Text>
@@ -120,20 +120,14 @@ const LoginTypeBox = () => {
         transform: [{translateY: boxY}],
       }}>
       <ButtonChooseLoginType
-        backgroundColor={COLORS.lightGray}
-        foregroundColor={COLORS.black}
         title="ĐĂNG NHẬP BẰNG TÀI KHOẢN SHANECT"
         icon="shanect"
       />
       <ButtonChooseLoginType
-        backgroundColor={COLORS.accent}
-        foregroundColor={COLORS.white}
         title="ĐĂNG NHẬP VỚI GOOGLE"
         icon="google"
       />
       <ButtonChooseLoginType
-        backgroundColor={COLORS.blue}
-        foregroundColor={COLORS.white}
         title="ĐĂNG NHẬP VỚI FACEBOOK"
         icon="facebook"
       />
@@ -159,6 +153,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: SIZES.padding,
     paddingVertical: SIZES.padding2,
     marginVertical: SIZES.padding * 0.6,
+    backgroundColor: 'rgba(197,88,128, 0.55)'
   },
   shadow: {
     shadowColor: '#000',

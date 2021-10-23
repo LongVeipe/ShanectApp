@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {SIZES, images, COLORS, FONTS, icons} from '../../constants';
 import LinearGradient from 'react-native-linear-gradient';
 import {useSelector, useDispatch} from 'react-redux';
@@ -22,7 +22,7 @@ import Animated, {
   timing,
 } from 'react-native-reanimated';
 import {TapGestureHandler, State} from 'react-native-gesture-handler';
-import Svg, {Circle, ClipPath} from 'react-native-svg';
+import Svg, {Circle, ClipPath, Image} from 'react-native-svg';
 
 function runTiming(clock, value, dest) {
   const state = {
@@ -68,7 +68,7 @@ const IconBackground = () => {
   ]);
   const bgrY = interpolateNode(buttonOpacity, {
     inputRange: [0, 1],
-    outputRange: [-SIZES.height * 0.5, 0],
+    outputRange: [-SIZES.height * 0.5 -50, 0],
     extrapolate: Extrapolate.CLAMP,
   });
   const rotateCross = interpolateNode(buttonOpacity, {
@@ -86,7 +86,19 @@ const IconBackground = () => {
     <Animated.View
       style={{...styles.container, transform: [{translateY: bgrY}]}}>
       <View style={styles.linearGradient}>
-        <Image style={styles.background} source={images.loginBackground} />
+        <Svg height={SIZES.height + 50} width={SIZES.width}>
+          <ClipPath id='clip'>
+            <Circle r={SIZES.height + 50} cx={SIZES.width/2}/>
+          </ClipPath>
+          <Image
+            // style={styles.background}
+            href={images.loginBackground}
+            width={SIZES.width}
+            height={SIZES.height + 50}
+            preserveAspectRatio='xMidYMid slice'
+            clipPath="url(#clip)"
+          />
+        </Svg>
       </View>
       <TapGestureHandler onHandlerStateChange={onCloseLoginForm}>
         <Animated.View
@@ -153,6 +165,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     position: 'absolute',
     left: SIZES.width / 2 - 20,
-    bottom: -20,
+    bottom: -70,
   },
 });

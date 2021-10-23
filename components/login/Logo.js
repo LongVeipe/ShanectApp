@@ -1,6 +1,10 @@
 import React from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
-import Animated, {interpolateNode, Extrapolate, interpolateColors} from 'react-native-reanimated';
+import Animated, {
+  interpolateNode,
+  Extrapolate,
+  interpolateColors,
+} from 'react-native-reanimated';
 import {useSelector} from 'react-redux';
 import {COLORS, DEFINES, images, SIZES, FONTS} from '../../constants';
 
@@ -11,14 +15,15 @@ const Logo = () => {
     outputColorRange: [COLORS.lightGray, COLORS.black],
     extrapolate: Extrapolate.CLAMP,
   });
-  const logoSrc = interpolateNode(buttonOpacity, {
+  const logoLightOpacity = interpolateNode(buttonOpacity, {
     inputRange: [0, 1],
-    outputRange: [images.logo_50_opacity_light, images.logo_50_opacity],
+    outputRange: [1, 0],
     extrapolate: Extrapolate.CLAMP,
   });
   return (
     <View style={styles.container}>
-      <Animated.Image style={styles.logo} source={images.logo_50_opacity} />
+      <Animated.Image style={{...styles.logo, opacity:buttonOpacity}} source={images.logo_50_opacity} />
+      <Animated.Image style={{...styles.logoLight, opacity: logoLightOpacity}} source={images.logo_50_opacity_light} />
       <View
         style={{
           flexDirection: 'row',
@@ -67,5 +72,11 @@ const styles = StyleSheet.create({
   logo: {
     width: SIZES.width * 0.3,
     height: SIZES.width * 0.3,
+  },
+  logoLight: {
+    width: SIZES.width * 0.3,
+    height: SIZES.width * 0.3,
+    position: 'absolute',
+    top: SIZES.width/6,
   },
 });
