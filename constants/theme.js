@@ -54,7 +54,9 @@ export const SIZES = {
 
     // app dimensions
     width,
-    height
+    height,
+
+    header: 80,
 };
 
 export const FONTS = {

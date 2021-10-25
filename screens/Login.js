@@ -10,10 +10,10 @@ import {
   Logo
 } from '../components/login';
 
-const Login = () => {
+const Login = ({navigation}) => {
   const loginType = useSelector(state => state.loginReducer.loginType);
   const renderLoginForm = () => {
-    if (loginType === DEFINES.APP_NAME) return <ShanectLoginForm />;
+    if (loginType === DEFINES.APP_NAME) return <ShanectLoginForm navigation={navigation}/>;
     return <View />;
   };
 

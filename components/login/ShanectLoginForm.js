@@ -15,7 +15,7 @@ import {rememberPassword} from '../../redux/reducers/loginActions';
 import Animated, {interpolate, Extrapolate} from 'react-native-reanimated';
 import {TapGestureHandler} from 'react-native-gesture-handler';
 
-const ShanectLoginForm = props => {
+const ShanectLoginForm = ({navigation}) => {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const isRememberPassword = useSelector(state => {
@@ -58,6 +58,9 @@ const ShanectLoginForm = props => {
         style={{
           height: 20,
         }}
+        renderErrorMessage={true}
+        errorMessage="lỗi"
+        containerStyle={styles.textInput}
       />
       <Input
         placeholder="Mật khẩu"
@@ -81,6 +84,7 @@ const ShanectLoginForm = props => {
           ...FONTS.body3,
         }}
         containerStyle={styles.textInput}
+        spellCheck={false}
       />
       <View
         style={{
@@ -107,7 +111,7 @@ const ShanectLoginForm = props => {
       <View style={styles.register}>
         <Text>Bạn chưa có tài khoản?</Text>
         <TouchableOpacity style={{marginLeft: SIZES.padding}}>
-          <Text style={{textDecorationLine: 'underline'}}>Đăng ký</Text>
+          <Text style={{textDecorationLine: 'underline'}} onPress={() => navigation.navigate("Register")}>Đăng ký</Text>
         </TouchableOpacity>
       </View>
     </Animated.View>
