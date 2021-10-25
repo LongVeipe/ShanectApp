@@ -1,14 +1,9 @@
 import React, {useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {CheckBox, Input} from 'react-native-elements';
+import {TextInput, HelperText} from 'react-native-paper';
 import {COLORS, FONTS, SIZES} from '../../constants';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {rememberPassword} from '../../redux/reducers/loginActions';
@@ -46,7 +41,7 @@ const ShanectLoginForm = ({navigation}) => {
         opacity: formOpacity,
         transform: [{translateY: formY}],
       }}>
-      <Input
+      {/* <Input
         placeholder="Tên đăng nhập"
         leftIcon={
           <FontAwesome name="user" size={20} style={{color: COLORS.darkPink}} />
@@ -85,6 +80,21 @@ const ShanectLoginForm = ({navigation}) => {
         }}
         containerStyle={styles.textInput}
         spellCheck={false}
+      /> */}
+      <TextInput
+        mode="outlined"
+        style={styles.textInput}
+        selectionColor={COLORS.black}
+        containerStyle={{borderColor: 'red'}}
+        label='Email hoặc Tên đăng nhập'
+      />
+     
+      <TextInput
+        mode="outlined"
+        style={styles.textInput}
+        selectionColor={COLORS.black}
+        containerStyle={{borderColor: 'red'}}
+        label='Mật khẩu'
       />
       <View
         style={{
@@ -95,7 +105,7 @@ const ShanectLoginForm = ({navigation}) => {
         <CheckBox
           title="Nhớ mật khẩu"
           containerStyle={{...styles.checkBox}}
-          textStyle={{fontWeight: isRememberPassword? 'bold':'normal'}}
+          textStyle={{fontWeight: isRememberPassword ? 'bold' : 'normal'}}
           checked={isRememberPassword}
           checkedColor={COLORS.darkPink}
           onPress={() => dispatch(rememberPassword())}
@@ -111,7 +121,11 @@ const ShanectLoginForm = ({navigation}) => {
       <View style={styles.register}>
         <Text>Bạn chưa có tài khoản?</Text>
         <TouchableOpacity style={{marginLeft: SIZES.padding}}>
-          <Text style={{textDecorationLine: 'underline'}} onPress={() => navigation.navigate("Register")}>Đăng ký</Text>
+          <Text
+            style={{textDecorationLine: 'underline'}}
+            onPress={() => navigation.navigate('Register')}>
+            Đăng ký
+          </Text>
         </TouchableOpacity>
       </View>
     </Animated.View>
@@ -130,7 +144,11 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
   },
-  textInput: {},
+  textInput: {
+    backgroundColor: COLORS.white,
+    borderRadius: SIZES.radius,
+    marginVertical: SIZES.padding/2,
+  },
   shadow: {
     shadowColor: '#000',
     shadowOffset: {

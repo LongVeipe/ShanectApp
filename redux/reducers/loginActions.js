@@ -16,3 +16,21 @@ export function closeLoginForm(buttonOpacity){
         }
     }
 }
+
+export function setTextUsername(username){
+    return{
+        type: ACTION_TYPES.SET_TEXT_USERNAME,
+        payload:{
+            username,
+        }
+    }
+}
+
+export function setTextPassword(password){
+    return {
+        type: ACTION_TYPES.SET_TEXT_PASSWORD,
+        payload:{
+            password,
+        }
+    }
+}

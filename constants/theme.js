@@ -56,7 +56,7 @@ export const SIZES = {
     width,
     height,
 
-    header: 80,
+    header: 70,
 };
 
 export const FONTS = {
