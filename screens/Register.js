@@ -20,6 +20,10 @@ const Register = ({navigation}) => {
   const [isShowPass, setIsShowPass] = useState(false);
   const [isShowRepeatPass, setIsShowRepeatPass] = useState(false);
   const [isValidEmail, setIsValidEmail] = useState(true);
+  const [isEmptyFullname, setIsEmptyFullname] = useState(false);
+  const [isEmptyUsername, setIsEmptyUsername] = useState(false);
+  const [isEmptyPassword, setIsEmptyPassword] = useState(false);
+  const [isValidRepeatPassword, setIsValidRepeatPassword] = useState(true);
   const theme = useTheme();
   const dispatch = useDispatch();
   const fullName = useSelector(state => state.registerReducer.fullName);
@@ -38,22 +42,33 @@ const Register = ({navigation}) => {
       setIsValidEmail(true);
     }
   };
+  const checkEmpty = text => text.length == 0;
 
   const onChangeFullName = text => {
+    text = text.trim();
     const newText = restrict(text);
     dispatch(registerAction.changeFullName(newText));
+    newText.length == 0 ? setIsEmptyFullname(true) : setIsEmptyFullname(false);
   };
 
   const onChangeUsername = text => {
+    text.trim();
     const newText = text.replace(
       /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi,
       '',
     );
     dispatch(registerAction.changeUsername(newText));
+    newText.length == 0 ? setIsEmptyUsername(true) : setIsEmptyUsername(false);
   };
-
-  const handleKeyPress = prop => {
-    console.log(prop);
+  const onChangePassword = text => {
+    text.trim();
+    dispatch(registerAction.changePassword(text));
+    text.length == 0 ? setIsEmptyPassword(true) : setIsEmptyPassword(false);
+  };
+  const onChangeRepeatPassword = text => {
+    text === password
+      ? setIsValidRepeatPassword(true)
+      : setIsValidRepeatPassword(false);
   };
   return (
     <SafeAreaView style={styles.container}>
@@ -74,7 +89,7 @@ const Register = ({navigation}) => {
         </Text>
       </View>
       <View style={{...styles.form, backgroundColor: theme.colors.background}}>
-        <ScrollView style={{flex: 1}}>
+        <ScrollView style={{flex: 1,}}>
           <TextInput
             mode="outlined"
             style={styles.textInput}
@@ -84,6 +99,12 @@ const Register = ({navigation}) => {
             onChangeText={text => onChangeFullName(text)}
             onKeyPress={text => handleKeyPress(text)}
           />
+          <HelperText
+            type="error"
+            visible={isEmptyFullname}
+            style={{paddingVertical: 0}}>
+            Họ và tên không được để trống
+          </HelperText>
           <TextInput
             mode="outlined"
             style={styles.textInput}
@@ -92,6 +113,12 @@ const Register = ({navigation}) => {
             value={username}
             onChangeText={text => onChangeUsername(text)}
           />
+          <HelperText
+            type="error"
+            visible={isEmptyUsername}
+            style={{paddingVertical: 0}}>
+            Tên đăng nhập không được để trống
+          </HelperText>
           <TextInput
             mode="outlined"
             style={styles.textInput}
@@ -100,13 +127,16 @@ const Register = ({navigation}) => {
             keyboardType="email-address"
             textContentType="emailAddress"
             autoCompleteType="email"
-            onChangeText={text=>validateEmail(text)}
+            onChangeText={text => validateEmail(text)}
             error={!isValidEmail}
           />
-          <HelperText visible={!isValidEmail} type="error">
+          <HelperText
+            visible={!isValidEmail}
+            type="error"
+            style={{paddingVertical: 0}}>
             Email không hợp lệ
           </HelperText>
-          <View style={{marginVertical: SIZES.padding / 2}}>
+          <View style={{marginBottom: SIZES.padding * 2}}>
             <Text
               style={{
                 ...FONTS.body4,
@@ -144,7 +174,15 @@ const Register = ({navigation}) => {
               />
             }
             secureTextEntry={!isShowPass}
+            onChangeText={text => onChangePassword(text)}
+            error={isEmptyPassword}
           />
+          <HelperText
+            visible={isEmptyPassword}
+            type="error"
+            style={{paddingVertical: 0}}>
+            Chưa điền mật khẩu
+          </HelperText>
           <TextInput
             mode="outlined"
             style={styles.textInput}
@@ -157,7 +195,18 @@ const Register = ({navigation}) => {
               />
             }
             secureTextEntry={!isShowRepeatPass}
+            error={!isValidRepeatPassword}
+            onChangeText={text => onChangeRepeatPassword(text)}
           />
+          <HelperText
+            visible={!isValidRepeatPassword}
+            type="error"
+            style={{paddingVertical: 0}}>
+            Nhập lại chưa chính xác
+          </HelperText>
+          <TouchableOpacity style={styles.loginButton}>
+            <Text style={styles.loginText}>ĐĂNG NHẬP</Text>
+          </TouchableOpacity>
         </ScrollView>
       </View>
     </SafeAreaView>
@@ -222,5 +271,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: SIZES.padding * 2,
     paddingRight: SIZES.padding,
+  },
+  loginButton: {
+    backgroundColor: COLORS.white,
+    borderRadius: SIZES.radius,
+    paddingVertical: SIZES.padding,
+    marginHorizontal: SIZES.padding * 2,
+    marginVertical: SIZES.padding*2,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  loginText: {
+    ...FONTS.body3,
+    color: COLORS.black,
+    fontWeight: 'bold',
   },
 });
