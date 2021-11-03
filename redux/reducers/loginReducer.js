@@ -6,12 +6,19 @@ let defaultState = {
   loginType: "shanect",
   isRememberPassword: false,
   buttonOpacity: new Value(1),
+  loginResponse: null,
+  username: "",
+  password: "",
 };
 
 let loginReducer = (state = defaultState, action) => {
   let newState = {...state};
   switch (action.type) {
     case ACTION_TYPES.LOGIN_BY_SHANECT:
+      newState={
+        ...state,
+        loginResponse: action.loginResponse,
+      }
       break;
     case ACTION_TYPES.LOGIN_BY_FACEBOOK:
       break;
@@ -31,12 +38,21 @@ let loginReducer = (state = defaultState, action) => {
       }
       break;
     case ACTION_TYPES.CLOSE_LOGIN_FORM:
-      console.log("ok")
       newState = {
         ...state,
         buttonOpacity: action.buttonOpacity,
       }
       break;
+    case ACTION_TYPES.CHANGE_USERNAME:
+      return{
+        ...state,
+        username: action.payload.username
+      }
+    case ACTION_TYPES.CHANGE_PASSWORD:
+      return{
+        ...state,
+        password: action.payload.password,
+      }
     default:
       break;
   }

@@ -205,7 +205,7 @@ const Register = ({navigation}) => {
             Nhập lại chưa chính xác
           </HelperText>
           <TouchableOpacity style={styles.loginButton}>
-            <Text style={styles.loginText}>ĐĂNG NHẬP</Text>
+            <Text style={styles.loginText}>ĐĂNG KÝ</Text>
           </TouchableOpacity>
         </ScrollView>
       </View>

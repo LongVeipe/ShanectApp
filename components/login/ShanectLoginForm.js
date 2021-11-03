@@ -6,16 +6,25 @@ import {CheckBox, Input} from 'react-native-elements';
 import {TextInput, HelperText} from 'react-native-paper';
 import {COLORS, FONTS, SIZES} from '../../constants';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {rememberPassword} from '../../redux/reducers/loginActions';
+import {
+  rememberPassword,
+  loginByShanect,
+  changeUsername,
+  changePassword,
+} from '../../redux/reducers/loginActions';
 import Animated, {interpolate, Extrapolate} from 'react-native-reanimated';
 import {TapGestureHandler} from 'react-native-gesture-handler';
+import axios from 'axios';
 
 const ShanectLoginForm = ({navigation}) => {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
-  const isRememberPassword = useSelector(state => {
-    return state.loginReducer.isRememberPassword;
-  });
+  const isRememberPassword = useSelector(
+    state => state.loginReducer.isRememberPassword,
+  );
+  const loginResponse = useSelector(state => state.loginReducer.loginResponse);
+  const username = useSelector(state => state.loginReducer.username);
+  const password = useSelector(state => state.loginReducer.password);
   const buttonOpacity = useSelector(state => state.loginReducer.buttonOpacity);
   const formY = buttonOpacity.interpolate({
     inputRange: [0, 1],
@@ -32,6 +41,15 @@ const ShanectLoginForm = ({navigation}) => {
     outputRange: [1, -1],
     extrapolate: Extrapolate.CLAMP,
   });
+  const onPressLogin = () => {
+    dispatch(loginByShanect(username, password));
+  };
+  const onChangeUsername = text => {
+    dispatch(changeUsername(text));
+  };
+  const onChangePassword = text => {
+    dispatch(changePassword(text));
+  };
 
   return (
     <Animated.View
@@ -41,60 +59,24 @@ const ShanectLoginForm = ({navigation}) => {
         opacity: formOpacity,
         transform: [{translateY: formY}],
       }}>
-      {/* <Input
-        placeholder="Tên đăng nhập"
-        leftIcon={
-          <FontAwesome name="user" size={20} style={{color: COLORS.darkPink}} />
-        }
-        inputStyle={{
-          color: COLORS.black,
-          ...FONTS.body3,
-        }}
-        style={{
-          height: 20,
-        }}
-        renderErrorMessage={true}
-        errorMessage="lỗi"
-        containerStyle={styles.textInput}
-      />
-      <Input
-        placeholder="Mật khẩu"
-        secureTextEntry={showPassword}
-        leftIcon={
-          <FontAwesome name="lock" size={20} style={{color: COLORS.darkPink}} />
-        }
-        rightIcon={
-          <TouchableOpacity>
-            <FontAwesome
-              name={showPassword? "eye":"eye-slash"}
-              size={20}
-              style={{color: COLORS.black}}
-              onPress={() => setShowPassword(!showPassword)}
-            />
-          </TouchableOpacity>
-        }
-        inputStyle={{
-          marginLeft: SIZES.padding,
-          color: COLORS.black,
-          ...FONTS.body3,
-        }}
-        containerStyle={styles.textInput}
-        spellCheck={false}
-      /> */}
       <TextInput
         mode="outlined"
         style={styles.textInput}
         selectionColor={COLORS.black}
         containerStyle={{borderColor: 'red'}}
-        label='Email hoặc Tên đăng nhập'
+        label="Email hoặc Tên đăng nhập"
+        value={username}
+        onChangeText={text => onChangeUsername(text)}
       />
-     
+
       <TextInput
         mode="outlined"
         style={styles.textInput}
         selectionColor={COLORS.black}
         containerStyle={{borderColor: 'red'}}
-        label='Mật khẩu'
+        label="Mật khẩu"
+        value={password}
+        onChangeText={text => onChangePassword(text)}
       />
       <View
         style={{
@@ -115,7 +97,9 @@ const ShanectLoginForm = ({navigation}) => {
           <Text style={styles.forgotPassText}>Quên mật khẩu?</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.loginButton}>
+      <TouchableOpacity
+        style={styles.loginButton}
+        onPress={() => onPressLogin()}>
         <Text style={styles.loginText}>ĐĂNG NHẬP</Text>
       </TouchableOpacity>
       <View style={styles.register}>
@@ -147,7 +131,7 @@ const styles = StyleSheet.create({
   textInput: {
     backgroundColor: COLORS.white,
     borderRadius: SIZES.radius,
-    marginVertical: SIZES.padding/2,
+    marginVertical: SIZES.padding / 2,
   },
   shadow: {
     shadowColor: '#000',
