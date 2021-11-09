@@ -11,6 +11,7 @@ const logo2 = require('../assets/images/logo2.png')
 const loginBackground = require('../assets/images/loginBackground.png')
 const logo_50_opacity = require('../assets/images/logo_50_opacity.png')
 const logo_50_opacity_light = require('../assets/images/logo_50_opacity_light.png')
+const logo_name = require('../assets/images/logoName.png')
 export default {
     avatar_1,
     avatar_2,
@@ -24,4 +25,5 @@ export default {
     loginBackground,
     logo_50_opacity,
     logo_50_opacity_light,
+    logo_name,
 }

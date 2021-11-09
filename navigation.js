@@ -16,7 +16,7 @@ const paperDefaultTheme ={
     ...PaperDefaultTheme.colors,
     primary: COLORS.primary,
     text: COLORS.black,
-    background: COLORS.darkPink,
+    background: COLORS.lightGray,
     accent: COLORS.lightPink,
   },
   roundness: SIZES.radius,
@@ -26,9 +26,9 @@ const navigationDefaultTheme={
   colors:{
     ...NavigationDefaultTheme.colors,
     primary: COLORS.primary,
-    text: COLORS.black,
     background: COLORS.lightGray,
     accent: COLORS.lightPink,
+    text: COLORS.black,
   },
 }
 const navigationDarkTheme={
@@ -46,6 +46,7 @@ const RootNavigation = () => {
         <NavigationContainer theme={navigationDefaultTheme}>
           <Stack.Navigator
             screenOptions={{
+              gestureEnabled: true,
               headerShown: false,
             }}
             initialRouteName={'MainTabs'}>
