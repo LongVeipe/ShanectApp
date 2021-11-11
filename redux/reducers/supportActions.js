@@ -6,22 +6,11 @@ export function showImageModal()
         type: ACTION_TYPES.SHOW_IMAGE_MODAL,
     }
 }
-
 export function closeImageModel(){
     return{
         type: ACTION_TYPES.CLOSE_IMAGE_MODAL,
     }
 }
-
-export function initFilterHeight(height){
-    return{
-        type: ACTION_TYPES.INIT_FILTER_HEIGHT,
-        payload:{
-            filterHeight: height,
-        }
-    }
-}
-
 export function onScrollY(filterTrans, tabsTrans){
     return{
         type: ACTION_TYPES.ON_SCROLL_Y,
@@ -29,5 +18,10 @@ export function onScrollY(filterTrans, tabsTrans){
             filterTrans: filterTrans,
             tabsTrans: tabsTrans
         }
+    }
+}
+export function onClicDetailFilter(){
+    return{
+        type: ACTION_TYPES.ON_CLICK_DETAIL_FILTER,  
     }
 }

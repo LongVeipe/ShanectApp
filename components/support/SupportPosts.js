@@ -29,70 +29,10 @@ const SupportPosts = () => {
   const isVisibleModal = useSelector(
     state => state.supportReducer.isVisibleModal,
   );
-  const filterHeight = DEFINES.SUPPORT_FILTER_HEIGHT + SIZES.padding*2
-  const tabsHeight = DEFINES.BOTTOM_TABS_HEIGHT;
+  const FILTER_HEIGHT = DEFINES.SUPPORT_FILTER_HEIGHT + SIZES.padding*2
   const [imageSelected, setImageSelected] = useState(0);
 
-  const scrollY = useRef(new Animated.Value(0)).current;
-  const offsetAnim = useRef(new Animated.Value(0)).current;
-
-  const clampedScroll = Animated.diffClamp(
-    Animated.add(
-      scrollY.interpolate({
-        inputRange: [0, 1],
-        outputRange: [0, 1],
-        extrapolateLeft: 'clamp',
-      }),
-      offsetAnim,
-    ),
-    0,
-    filterHeight,
-  );
-
-  var _clampScrollValue = 0;
-  var _offsetValue = 0;
-  var _scrollValue = 0;
-  useEffect(() => {
-    scrollY.addListener(({value}) => {
-      const diff = value - _scrollValue;
-      _scrollValue = value;
-      _clampScrollValue = Math.min(
-        Math.max(_clampScrollValue * diff, 0),
-        filterHeight,
-      );
-    });
-    offsetAnim.addListener(({value}) => {
-      _offsetValue = value;
-    });
-  }, []);
-  var scrollEndTimer = null;
-  const onMomentumScrollBegin = () => {
-    clearTimeout(scrollEndTimer);
-  }
-  const onMomentumScrollEnd = () => {
-    const toValue = _scrollValue > filterHeight && _clampScrollValue > filterHeight/2
-      ? _offsetValue + filterHeight: _offsetValue - filterHeight;
-
-      Animated.timing(offsetAnim, {
-        toValue,
-        duration: 500,
-        useNativeDriver: true,
-      }).start();
-  }
-  const onScrollEndDrag = () => {
-    scrollEndTimer = setTimeout(onMomentumScrollEnd, 250);
-  }
-  const filterTrans = clampedScroll.interpolate({
-    inputRange: [0, filterHeight],
-    outputRange: [0, -filterHeight],
-    extrapolate: 'clamp'
-  })
-
-  const tabsTrans = clampedScroll.interpolate({
-    inputRange: [0, filterHeight],
-    outputRange: [0, 100],
-    extrapolate: 'clamp'
-  })
+  const scrollY = useSelector(state=>state.supportReducer.scrollY);
 
   const onShowModal = (url, index, event) => {
     dispatch(showImageModal());
@@ -105,6 +45,40 @@ const SupportPosts = () => {
   const data = [
     {
       id: 1,
+      avatar:
+        'https://toigingiuvedep.vn/wp-content/uploads/2021/05/hinh-nen-khung-long-cute.jpg',
+      name: 'Nguyễn Đình Long',
+      contain:
+        'a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a aasdfas  a a â  a fasdf   a f á f á ',
+      img: [
+        'https://www.pixelstalk.net/wp-content/uploads/2016/11/Dark-Abstract-Phone-Background.jpg',
+        'https://i.pinimg.com/originals/76/6e/62/766e6222986cf3afcdfe7b3a7efda1c5.jpg',
+        'https://i.pinimg.com/originals/2e/c6/b5/2ec6b5e14fe0cba0cb0aa5d2caeeccc6.jpg',
+        'https://images.pexels.com/photos/1366919/pexels-photo-1366919.jpeg',
+        'https://wallpaperaccess.com/full/459246.jpg',
+        'https://i.pinimg.com/736x/6a/28/78/6a28787df7574756ac957c552aa4a249.jpg',
+        'https://www.nawpic.com/media/2020/wallpaper-for-phone-nawpic-3.jpg',
+      ],
+    },
+    {
+      id: 2,
+      avatar:
+        'https://toigingiuvedep.vn/wp-content/uploads/2021/05/hinh-nen-khung-long-cute.jpg',
+      name: 'Nguyễn Đình Long',
+      contain:
+        'a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a aasdfas  a a â  a fasdf   a f á f á ',
+      img: [
+        'https://www.pixelstalk.net/wp-content/uploads/2016/11/Dark-Abstract-Phone-Background.jpg',
+        'https://i.pinimg.com/originals/76/6e/62/766e6222986cf3afcdfe7b3a7efda1c5.jpg',
+        'https://i.pinimg.com/originals/2e/c6/b5/2ec6b5e14fe0cba0cb0aa5d2caeeccc6.jpg',
+        'https://images.pexels.com/photos/1366919/pexels-photo-1366919.jpeg',
+        'https://wallpaperaccess.com/full/459246.jpg',
+        'https://i.pinimg.com/736x/6a/28/78/6a28787df7574756ac957c552aa4a249.jpg',
+        'https://www.nawpic.com/media/2020/wallpaper-for-phone-nawpic-3.jpg',
+      ],
+    },
+    {
+      id: 3,
       avatar:
         'https://toigingiuvedep.vn/wp-content/uploads/2021/05/hinh-nen-khung-long-cute.jpg',
       name: 'Nguyễn Đình Long',
@@ -210,21 +184,13 @@ const SupportPosts = () => {
       showsVerticalScrollIndicator={false}
       keyExtractor={item => `${item.id}`}
       contentContainerStyle={{
-        paddingVertical: filterHeight,
+        paddingVertical:FILTER_HEIGHT,
         paddingHorizontal: SIZES.padding,
       }}
       renderItem={Post}
       onScroll={Animated.event([{nativeEvent: {contentOffset: {y: scrollY}}}], {
-        listener: event => {
-           dispatch(onScrollY(filterTrans, tabsTrans))
-          // console.log(filterHeightAnim)
-        },
         useNativeDriver: true,
       })}
-      onMomentumScrollBegin={onMomentumScrollBegin}
-      onMomentumScrollEnd={onMomentumScrollEnd}
-      onScrollEndDrag={onScrollEndDrag}
-      scrollEventThrottle={1}
     />
   );
 };
@@ -234,7 +200,6 @@ export default SupportPosts;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // marginTop: DEFINES.SUPPORT_FILTER_HEIGHT + SIZES.padding,
   },
   shadow: {
     shadowColor: '#000',
@@ -256,6 +221,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
     elevation: 3,
+    marginBottom: SIZES.padding
   },
   info: {
     flexDirection: 'row',

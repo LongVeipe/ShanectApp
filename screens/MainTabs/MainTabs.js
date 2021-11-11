@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, View, TouchableOpacity} from 'react-native';
+import {SafeAreaView, StyleSheet, View, Animated} from 'react-native';
 import {
   createBottomTabNavigator,
   BottomTabBar,
@@ -11,7 +11,7 @@ import Consult from './Consult';
 import Support from './Support';
 import Notification from './Notification';
 import Covid from './Covid';
-import {COLORS, SIZES} from '../../constants';
+import {COLORS, SIZES, DEFINES} from '../../constants';
 import {MainHeader, MainTabButton} from '../../components/mainTabs';
 import LinearGradient from 'react-native-linear-gradient';
 import { useSelector } from 'react-redux';
@@ -22,8 +22,15 @@ const CustomTabBar = props => {
   return <BottomTabBar {...props.props} />;
 };
 const MainTabs = () => {
+  const FILTER_HEIGHT = DEFINES.SUPPORT_FILTER_HEIGHT + SIZES.padding * 2;
   const theme = useTheme();
-  const tabsTrans = useSelector(state=>state.supportReducer.tabsTrans)
+  const scrollY = useSelector(state=>state.supportReducer.scrollY)
+  const diffClampScrollY = Animated.diffClamp(scrollY, 0, FILTER_HEIGHT);
+  const tabsTrans = diffClampScrollY.interpolate({
+    inputRange: [0, FILTER_HEIGHT],
+    outputRange: [0, 100],
+    extrapolate: 'clamp'
+  })
   return (
     <SafeAreaView style={{...styles.container}}>
       

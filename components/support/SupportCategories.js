@@ -48,7 +48,7 @@ export default SupportCategories;
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    paddingHorizontal: SIZES.padding * 2,
+    paddingHorizontal: SIZES.padding,
     paddingBottom: SIZES.padding,
     alignItems: 'center',
   },
