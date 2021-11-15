@@ -1,13 +1,59 @@
 import {useTheme} from '@react-navigation/native';
-import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useState} from 'react';
+import {Animated, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {TextInput, useTheme as useThemeRP} from 'react-native-paper';
 import {COLORS, SIZES} from '../../constants';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useDispatch, useSelector} from 'react-redux';
+import {CheckBox} from 'react-native-elements';
+import DropDownPicker from 'react-native-dropdown-picker';
+import {
+  checkSubCategory,
+  onClicDetailFilter,
+} from '../../redux/reducers/supportActions';
 
 const SupportFilter = () => {
-  const themeRP = useThemeRP();
   const theme = useTheme();
+  const dispatch = useDispatch();
+  const selectedCategory = useSelector(
+    state => state.supportReducer.selectedCategory,
+  );
+  const isVisibleDetailFilter = useSelector(
+    state => state.supportReducer.isVisibleDetailFilter,
+  );
+  const checkedSubCategories = useSelector(
+    state => state.supportReducer.checkedSubCategories,
+  );
+
+  // const [detailFilterHeight, setDetailFilterHeight] = useState(new Animated.Value(0))
+  function onCheckSubCategory(id) {
+    dispatch(checkSubCategory(id));
+  }
+  const onExpandFilter = () => {
+    dispatch(onClicDetailFilter());
+  };
+
+  const SubCategoryCheckBox = ({sub}) => {
+    return (
+      <CheckBox
+        theme={theme}
+        containerStyle={{
+          ...styles.checkBox,
+          backgroundColor: theme.colors.background,
+        }}
+        title={sub.name}
+        checked={sub.checked}
+        onPress={() => onCheckSubCategory(sub.id)}
+      />
+    );
+  };
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+    {label: 'Tất cả', value: null},
+    {label: 'Apple', value: 'apple'},
+    {label: 'Banana', value: 'banana'},
+  ]);
   return (
     <View>
       <View style={{...styles.basicFilter}}>
@@ -18,12 +64,65 @@ const SupportFilter = () => {
           left={<TextInput.Icon name="account-search" style={{opacity: 0.7}} />}
           right={<TextInput.Icon name="close" style={{opacity: 0.7}} />}
         />
-        <TouchableOpacity style={{...styles.checkList}}>
+        <TouchableOpacity
+          style={{...styles.checkList}}
+          onPress={onExpandFilter}>
           <MaterialCommunityIcons name="format-list-checks" size={30} />
         </TouchableOpacity>
       </View>
-      
-      <View style={{...styles.detailFilter}}></View>
+
+      {isVisibleDetailFilter && (
+        <View
+          style={{
+            marginBottom: SIZES.padding,
+            marginHorizontal: SIZES.padding,
+          }}>
+          <View style={{...styles.detailFilter}}>
+            {selectedCategory &&
+              checkedSubCategories.map((item, index) => (
+                <SubCategoryCheckBox key={index} sub={item} />
+              ))}
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <View style={{paddingRight: SIZES.padding, flex: 1}}>
+              <DropDownPicker
+                open={open}
+                value={value}
+                items={items}
+                setOpen={setOpen}
+                setValue={setValue}
+                setItems={setItems}
+                style={{backgroundColor: theme.colors.background}}
+                placeholder="Tỉnh, thành"
+              />
+            </View>
+            <View style={{flex: 1, paddingHorizontal: SIZES.padding/2}}>
+              <DropDownPicker
+                open={open}
+                value={value}
+                items={items}
+                setOpen={setOpen}
+                setValue={setValue}
+                setItems={setItems}
+                style={{backgroundColor: theme.colors.background}}
+                placeholder="Quận, huyện"
+              />
+            </View>
+            <View style={{flex: 1, paddingLeft: SIZES.padding}}>
+              <DropDownPicker
+                open={open}
+                value={value}
+                items={items}
+                setOpen={setOpen}
+                setValue={setValue}
+                setItems={setItems}
+                style={{backgroundColor: theme.colors.background}}
+                placeholder={`Xã,\nPhường`}
+              />
+            </View>
+          </View>
+        </View>
+      )}
     </View>
   );
 };
@@ -45,6 +144,10 @@ const styles = StyleSheet.create({
     marginLeft: SIZES.padding,
   },
   detailFilter: {
-    
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  checkBox: {
+    padding: 0,
   },
 });

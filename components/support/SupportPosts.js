@@ -19,7 +19,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {
   showImageModal,
   closeImageModel,
-  onScrollY
+  onScrollY,
 } from '../../redux/reducers/supportActions';
 import ImageViewing from 'react-native-image-viewing';
 
@@ -29,10 +29,10 @@ const SupportPosts = () => {
   const isVisibleModal = useSelector(
     state => state.supportReducer.isVisibleModal,
   );
-  const FILTER_HEIGHT = DEFINES.SUPPORT_FILTER_HEIGHT + SIZES.padding*2
+  const FILTER_HEIGHT = DEFINES.SUPPORT_FILTER_HEIGHT + SIZES.padding * 2;
   const [imageSelected, setImageSelected] = useState(0);
 
-  const scrollY = useSelector(state=>state.supportReducer.scrollY);
+  const scrollY = useSelector(state => state.supportReducer.scrollY);
 
   const onShowModal = (url, index, event) => {
     dispatch(showImageModal());
@@ -179,16 +179,19 @@ const SupportPosts = () => {
   };
   return (
     <Animated.FlatList
-      style={{...styles.container,}}
+      style={{...styles.container}}
       data={data}
       showsVerticalScrollIndicator={false}
       keyExtractor={item => `${item.id}`}
       contentContainerStyle={{
-        paddingVertical:FILTER_HEIGHT,
+        paddingVertical: FILTER_HEIGHT,
         paddingHorizontal: SIZES.padding,
       }}
       renderItem={Post}
       onScroll={Animated.event([{nativeEvent: {contentOffset: {y: scrollY}}}], {
+        listener: event => {
+          dispatch(onScrollY())
+        },
         useNativeDriver: true,
       })}
     />
@@ -221,7 +224,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
     elevation: 3,
-    marginBottom: SIZES.padding
+    marginBottom: SIZES.padding,
   },
   info: {
     flexDirection: 'row',

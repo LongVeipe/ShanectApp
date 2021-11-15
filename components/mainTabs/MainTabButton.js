@@ -52,13 +52,13 @@ const MainTabButton = props => {
         <FontAwesome5
           size={25}
           name={props.iconName}
-          color={selected ? theme.colors.accent : theme.colors.accent}
+          color={selected ? theme.colors.primaryFaint : theme.colors.primaryLight}
         />
         {selected && (
           <Text
             style={{
                 fontSize: 16,
-              color: selected ? theme.colors.accent : theme.colors.accent,
+              color: selected ? theme.colors.primaryFaint : theme.colors.primaryFaint,
               paddingLeft: SIZES.padding,
             }}>
             {props.label}

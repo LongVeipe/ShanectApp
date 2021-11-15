@@ -1,5 +1,5 @@
 import {useTheme} from '@react-navigation/native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   FlatList,
   ListView,
@@ -10,21 +10,60 @@ import {
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  fetchCategories,
+  selectCategory,
+} from '../../redux/reducers/supportActions';
 import {COLORS, FONTS, SIZES} from '../../constants';
 
 const SupportCategories = () => {
+  const dispatch = useDispatch();
+  const categories = useSelector(state => state.supportReducer.categories);
+  const selectedCategory = useSelector(
+    state => state.supportReducer.selectedCategory,
+  );
   const theme = useTheme();
-  const ButtonCategory = ({icon, label}) => (
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, []);
+
+  function onSelectCategory(category) {
+    dispatch(selectCategory(category));
+  }
+  const ButtonCategory = ({category}) => (
     <TouchableOpacity
-      style={{...styles.button, backgroundColor: theme.colors.accent}}>
-      <Icon name={icon} size={20} />
+      onPress={() => onSelectCategory(category)}
+      style={{
+        ...styles.button,
+        backgroundColor:
+          selectedCategory?._id == category._id && theme.colors.primaryFaint,
+      }}>
+      <View
+        style={{
+          backgroundColor:
+            selectedCategory?._id == category._id &&
+            theme.colors.primaryBackgroundLight,
+          padding: SIZES.padding / 3,
+          borderRadius: SIZES.radius,
+        }}>
+        <Icon
+          name={category.icon}
+          size={20}
+          color={
+            selectedCategory?._id == category._id && theme.colors.primaryBold
+          }
+        />
+      </View>
       <Text
         style={{
           ...FONTS.body4,
           paddingLeft: SIZES.padding / 2,
           fontWeight: 'bold',
+          color:
+            selectedCategory?._id == category._id && theme.colors.primaryBold,
         }}>
-        {label}
+        {category.name}
       </Text>
     </TouchableOpacity>
   );
@@ -35,9 +74,9 @@ const SupportCategories = () => {
         style={{flexDirection: 'row', borderRadius: SIZES.radius}}
         horizontal
         showsHorizontalScrollIndicator={false}>
-        <ButtonCategory icon="rice" label="Thực phẩm" />
-        <ButtonCategory icon="package-variant" label="Nhu yếu phẩm" />
-        <ButtonCategory icon="medical-bag" label="Vật tư ý tế" />
+        {categories.map(item => (
+          <ButtonCategory key={item._id} category={item} />
+        ))}
       </ScrollView>
     </View>
   );
@@ -48,7 +87,6 @@ export default SupportCategories;
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    paddingHorizontal: SIZES.padding,
     paddingBottom: SIZES.padding,
     alignItems: 'center',
   },
@@ -56,8 +94,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: SIZES.radius,
-    padding: SIZES.padding,
-    marginRight: SIZES.padding * 2,
+    borderRadius: SIZES.radius * 2,
+    padding: SIZES.padding / 2,
+    marginRight: SIZES.padding,
   },
 });
