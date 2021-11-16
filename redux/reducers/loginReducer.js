@@ -9,6 +9,7 @@ let defaultState = {
   loginResponse: null,
   username: "",
   password: "",
+  errorLogin: null,
 };
 
 let loginReducer = (state = defaultState, action) => {
@@ -52,6 +53,11 @@ let loginReducer = (state = defaultState, action) => {
       return{
         ...state,
         password: action.payload.password,
+      }
+    case ACTION_TYPES.ERROR_LOGIN:
+      return{
+        ...state,
+        errorLogin: action.payload.errorLogin,
       }
     default:
       break;

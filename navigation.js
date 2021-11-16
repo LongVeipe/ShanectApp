@@ -40,13 +40,13 @@ const RootNavigation = () => {
   return (
     <Provider store={store}>
       <PaperProvider theme={paperDefaultTheme}>
-        <NavigationContainer theme={navigationDefaultTheme}>
+        <NavigationContainer theme={navigationDarkTheme}>
           <Stack.Navigator
             screenOptions={{
               gestureEnabled: true,
               headerShown: false,
             }}
-            initialRouteName={'MainTabs'}>
+            initialRouteName={'Login'}>
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Splash" component={Splash} />
             <Stack.Screen name="Register" component={Register} />

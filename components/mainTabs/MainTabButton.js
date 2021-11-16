@@ -25,6 +25,7 @@ const Background = styled(Transitioning.View)`
   margin-horizontal: 10px;
 `;
 const MainTabButton = props => {
+
   const theme = useTheme();
   const selected = props.accessibilityState.selected;
   const transition = (

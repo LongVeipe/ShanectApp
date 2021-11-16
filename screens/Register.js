@@ -88,55 +88,80 @@ const Register = ({navigation}) => {
           Đăng ký tài khoản mới
         </Text>
       </View>
-      <View style={{...styles.form, backgroundColor: theme.colors.background}}>
-        <ScrollView style={{flex: 1,}}>
+      <View
+        style={{
+          ...styles.form,
+          backgroundColor: theme.colors.primaryBackground,
+        }}>
+        <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
           <TextInput
             mode="outlined"
-            style={styles.textInput}
             label="Họ và tên"
-            left={<TextInput.Icon name="account" />}
             value={fullName}
             onChangeText={text => onChangeFullName(text)}
             onKeyPress={text => handleKeyPress(text)}
+            style={{
+              ...styles.textInput,
+              backgroundColor: theme.colors.primaryBackgroundLight,
+            }}
+            outlineColor={theme.colors.secondaryBackgroundLight}
+            theme={{
+              colors: {
+                text: theme.colors.primaryTextLight,
+                placeholder: theme.colors.primaryTextLight,
+              },
+            }}
           />
-          <HelperText
-            type="error"
-            visible={isEmptyFullname}
-            style={{paddingVertical: 0}}>
-            Họ và tên không được để trống
-          </HelperText>
+          {isEmptyFullname && (
+            <HelperText type="error">Họ và tên không được để trống</HelperText>
+          )}
           <TextInput
             mode="outlined"
-            style={styles.textInput}
             label="Tên đăng nhập"
-            left={<TextInput.Icon name="account-tie" />}
             value={username}
             onChangeText={text => onChangeUsername(text)}
+            error={isEmptyUsername}
+            style={{
+              ...styles.textInput,
+              backgroundColor: theme.colors.primaryBackgroundLight,
+            }}
+            outlineColor={theme.colors.secondaryBackgroundLight}
+            theme={{
+              colors: {
+                text: theme.colors.primaryTextLight,
+                placeholder: theme.colors.primaryTextLight,
+              },
+            }}
           />
-          <HelperText
-            type="error"
-            visible={isEmptyUsername}
-            style={{paddingVertical: 0}}>
-            Tên đăng nhập không được để trống
-          </HelperText>
+          {isEmptyUsername && (
+            <HelperText type="error">
+              Tên đăng nhập không được để trống
+            </HelperText>
+          )}
           <TextInput
             mode="outlined"
-            style={styles.textInput}
             label="Email"
-            left={<TextInput.Icon name="email" />}
             keyboardType="email-address"
             textContentType="emailAddress"
             autoCompleteType="email"
             onChangeText={text => validateEmail(text)}
             error={!isValidEmail}
+            style={{
+              ...styles.textInput,
+              backgroundColor: theme.colors.primaryBackgroundLight,
+            }}
+            outlineColor={theme.colors.secondaryBackgroundLight}
+            theme={{
+              colors: {
+                text: theme.colors.primaryTextLight,
+                placeholder: theme.colors.primaryTextLight,
+              },
+            }}
           />
-          <HelperText
-            visible={!isValidEmail}
-            type="error"
-            style={{paddingVertical: 0}}>
-            Email không hợp lệ
-          </HelperText>
-          <View style={{marginBottom: SIZES.padding * 2}}>
+          {!isValidEmail && (
+            <HelperText type="error">Email không hợp lệ</HelperText>
+          )}
+          <View style={{marginBottom: SIZES.padding}}>
             <Text
               style={{
                 ...FONTS.body4,
@@ -151,61 +176,67 @@ const Register = ({navigation}) => {
                 dispatch(registerAction.chooseGender(newValue))
               }>
               <View style={styles.genderBox}>
-                <View style={styles.maleBox}>
-                  <RadioButton value={true} />
-                  <Text>Nam</Text>
+                <View style={{...styles.maleBox, borderColor: theme.colors.secondaryBackgroundLight}}>
+                  <RadioButton value={true} color={theme.colors.primary}/>
+                  <Text style={{color: theme.colors.secondaryBackgroundLight}}>Nam</Text>
                 </View>
-                <View style={styles.maleBox}>
-                  <RadioButton value={false} />
-                  <Text>Nữ</Text>
+                <View style={{...styles.maleBox, borderColor: theme.colors.secondaryBackgroundLight}}>
+                  <RadioButton value={false} color={theme.colors.primary} />
+                  <Text style={{color: theme.colors.secondaryBackgroundLight}}>Nữ</Text>
                 </View>
               </View>
             </RadioButton.Group>
           </View>
           <TextInput
             mode="outlined"
-            style={styles.textInput}
             label="Mật khẩu"
-            left={<TextInput.Icon name="lock" />}
-            right={
-              <TextInput.Icon
-                name={isShowPass ? 'eye-off' : 'eye'}
-                onPress={() => setIsShowPass(!isShowPass)}
-              />
-            }
+            // right={
+            //   <TextInput.Icon
+            //     name={isShowPass ? 'eye-off' : 'eye'}
+            //     onPress={() => setIsShowPass(!isShowPass)}
+            //   />
+            // }
             secureTextEntry={!isShowPass}
             onChangeText={text => onChangePassword(text)}
             error={isEmptyPassword}
+            style={{
+              ...styles.textInput,
+              backgroundColor: theme.colors.primaryBackgroundLight,
+            }}
+            outlineColor={theme.colors.secondaryBackgroundLight}
+            theme={{
+              colors: {
+                text: theme.colors.primaryTextLight,
+                placeholder: theme.colors.primaryTextLight,
+              },
+            }}
           />
-          <HelperText
-            visible={isEmptyPassword}
-            type="error"
-            style={{paddingVertical: 0}}>
-            Chưa điền mật khẩu
-          </HelperText>
+          {isEmptyPassword && (
+            <HelperText type="error">Chưa điền mật khẩu</HelperText>
+          )}
           <TextInput
             mode="outlined"
-            style={styles.textInput}
             label="Nhập lại mật khẩu"
-            left={<TextInput.Icon name="lock-check" />}
-            right={
-              <TextInput.Icon
-                name={isShowRepeatPass ? 'eye-off' : 'eye'}
-                onPress={() => setIsShowRepeatPass(!isShowRepeatPass)}
-              />
-            }
             secureTextEntry={!isShowRepeatPass}
             error={!isValidRepeatPassword}
             onChangeText={text => onChangeRepeatPassword(text)}
+            style={{
+              ...styles.textInput,
+              backgroundColor: theme.colors.primaryBackgroundLight,
+            }}
+            outlineColor={theme.colors.secondaryBackgroundLight}
+            theme={{
+              colors: {
+                text: theme.colors.primaryTextLight,
+                placeholder: theme.colors.primaryTextLight,
+              },
+            }}
           />
-          <HelperText
-            visible={!isValidRepeatPassword}
-            type="error"
-            style={{paddingVertical: 0}}>
-            Nhập lại chưa chính xác
-          </HelperText>
-          <TouchableOpacity style={styles.loginButton}>
-            <Text style={styles.loginText}>ĐĂNG KÝ</Text>
+          {!isValidRepeatPassword && (
+            <HelperText type="error">Nhập lại chưa chính xác</HelperText>
+          )}
+          <TouchableOpacity style={{...styles.loginButton, shadowColor: theme.colors.secondaryBackground, backgroundColor: theme.colors.primaryBackgroundLight}}>
+            <Text style={{...styles.loginText, color: theme.colors.primaryTextLight}}>ĐĂNG KÝ</Text>
           </TouchableOpacity>
         </ScrollView>
       </View>
@@ -258,6 +289,8 @@ const styles = StyleSheet.create({
     padding: SIZES.padding * 2,
   },
   textInput: {
+    flex: 1,
+    height: 40,
     marginVertical: SIZES.padding / 2,
   },
   genderBox: {
@@ -273,13 +306,11 @@ const styles = StyleSheet.create({
     paddingRight: SIZES.padding,
   },
   loginButton: {
-    backgroundColor: COLORS.white,
     borderRadius: SIZES.radius,
     paddingVertical: SIZES.padding,
     marginHorizontal: SIZES.padding * 2,
-    marginVertical: SIZES.padding*2,
+    marginVertical: SIZES.padding * 2,
     alignItems: 'center',
-    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 3,
@@ -290,7 +321,6 @@ const styles = StyleSheet.create({
   },
   loginText: {
     ...FONTS.body3,
-    color: COLORS.black,
     fontWeight: 'bold',
   },
 });

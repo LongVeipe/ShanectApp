@@ -23,6 +23,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import {TapGestureHandler, State} from 'react-native-gesture-handler';
 import Svg, {Circle, ClipPath, Image} from 'react-native-svg';
+import { useTheme } from '@react-navigation/native';
 
 function runTiming(clock, value, dest) {
   const state = {
@@ -53,6 +54,7 @@ function runTiming(clock, value, dest) {
   ]);
 }
 const IconBackground = () => {
+  const theme = useTheme()
   const dispatch = useDispatch();
   const buttonOpacity = useSelector(state => state.loginReducer.buttonOpacity);
   const onCloseLoginForm = event([
@@ -105,6 +107,8 @@ const IconBackground = () => {
           style={{
             ...styles.closeButton,
             ...styles.shadow,
+            shadowColor: theme.colors.secondaryBackground,
+            backgroundColor: theme.colors.primaryBackgroundLight,
             opacity: buttonCloseOpacity,
           }}>
           <TouchableOpacity
@@ -116,7 +120,7 @@ const IconBackground = () => {
             <Animated.Text
               style={{
                 ...FONTS.body3,
-                color: COLORS.black,
+                color: theme.colors.primaryTextLight,
                 transform: [{rotate: concat(rotateCross, 'deg')}],
               }}>
               X
@@ -132,7 +136,6 @@ export default IconBackground;
 
 const styles = StyleSheet.create({
   shadow: {
-    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 3,
@@ -161,7 +164,6 @@ const styles = StyleSheet.create({
   closeButton: {
     height: 40,
     width: 40,
-    backgroundColor: COLORS.white,
     borderRadius: 20,
     position: 'absolute',
     left: SIZES.width / 2 - 20,

@@ -97,7 +97,7 @@ const SupportPosts = () => {
   ];
   const Post = ({item}) => {
     return (
-      <View style={{...styles.post, backgroundColor: theme.colors.background}}>
+      <View style={{...styles.post, backgroundColor: theme.colors.primaryBackgroundLight}}>
         <View style={{...styles.info}}>
           <Image
             source={{
@@ -109,7 +109,7 @@ const SupportPosts = () => {
             <Text style={{...FONTS.h4, color: theme.colors.text, opacity: 0.9}}>
               {item.name}
             </Text>
-            <Text style={{fontSize: 13, marginTop: SIZES.padding / 2}}>
+            <Text style={{fontSize: 13, color: theme.colors.text, marginTop: SIZES.padding / 2}}>
               1, Th9, 2021
             </Text>
           </View>
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     paddingTop: SIZES.padding,
   },
   avatar: {
-    borderRadius: SIZES.radius,
+    borderRadius: SIZES.radius*2,
     height: 50,
     width: 50,
   },

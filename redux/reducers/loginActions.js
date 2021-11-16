@@ -55,7 +55,12 @@ export function loginByShanect(username, password) {
         });
       })
       .catch(err => {
-        console.log(JSON.stringify(err.response));
+        dispatch({
+          type: ACTION_TYPES.ERROR_LOGIN,
+          payload:{
+            errorLogin: err,
+          }
+        })
       });
   // callApi('users/login', 'POST', {
   //   username: username,

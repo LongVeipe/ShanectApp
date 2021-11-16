@@ -9,8 +9,10 @@ import {
   ShanectLoginForm,
   Logo
 } from '../components/login';
+import { useTheme } from '@react-navigation/native';
 
 const Login = ({navigation}) => {
+  const theme = useTheme()
   const loginType = useSelector(state => state.loginReducer.loginType);
   const renderLoginForm = () => {
     if (loginType === DEFINES.APP_NAME) return <ShanectLoginForm navigation={navigation}/>;
@@ -18,7 +20,7 @@ const Login = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={{...styles.container, backgroundColor: theme.colors.primaryBackground}}>
       <LoginBackground />
       <LoginTypeBox />
       {renderLoginForm()}
@@ -32,7 +34,6 @@ export default Login;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.white,
     justifyContent: 'flex-end',
   },
 });

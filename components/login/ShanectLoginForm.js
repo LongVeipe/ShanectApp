@@ -15,8 +15,10 @@ import {
 import Animated, {interpolate, Extrapolate} from 'react-native-reanimated';
 import {TapGestureHandler} from 'react-native-gesture-handler';
 import axios from 'axios';
+import {useTheme} from '@react-navigation/native';
 
 const ShanectLoginForm = ({navigation}) => {
+  const theme = useTheme();
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const isRememberPassword = useSelector(
@@ -55,28 +57,47 @@ const ShanectLoginForm = ({navigation}) => {
     <Animated.View
       style={{
         ...styles.container,
+        backgroundColor: theme.colors.primaryBackground,
         zIndex: formZIndex,
         opacity: formOpacity,
         transform: [{translateY: formY}],
       }}>
       <TextInput
         mode="outlined"
-        style={styles.textInput}
-        selectionColor={COLORS.black}
-        containerStyle={{borderColor: 'red'}}
+        style={{
+          ...styles.textInput,
+          backgroundColor: theme.colors.primaryBackgroundLight,
+        }}
+        selectionColor={theme.colors.primaryTextLight}
+        outlineColor={theme.colors.secondaryBackgroundLight}
         label="Email hoặc Tên đăng nhập"
         value={username}
         onChangeText={text => onChangeUsername(text)}
+        theme={{
+          colors: {
+            text: theme.colors.primaryTextLight,
+            placeholder: theme.colors.primaryTextLight,
+          },
+        }}
       />
 
       <TextInput
         mode="outlined"
-        style={styles.textInput}
-        selectionColor={COLORS.black}
-        containerStyle={{borderColor: 'red'}}
+        style={{
+          ...styles.textInput,
+          backgroundColor: theme.colors.primaryBackgroundLight,
+        }}
+        selectionColor={theme.colors.primaryTextLight}
+        outlineColor={theme.colors.secondaryBackgroundLight}
         label="Mật khẩu"
         value={password}
         onChangeText={text => onChangePassword(text)}
+        theme={{
+          colors: {
+            text: theme.colors.primaryTextLight,
+            placeholder: theme.colors.primaryTextLight,
+          },
+        }}
       />
       <View
         style={{
@@ -86,27 +107,52 @@ const ShanectLoginForm = ({navigation}) => {
         }}>
         <CheckBox
           title="Nhớ mật khẩu"
-          containerStyle={{...styles.checkBox}}
-          textStyle={{fontWeight: isRememberPassword ? 'bold' : 'normal'}}
+          containerStyle={{
+            ...styles.checkBox,
+            backgroundColor: theme.colors.primaryBackground,
+            borderColor: theme.colors.primaryBackground,
+          }}
+          textStyle={{
+            fontWeight: isRememberPassword ? 'bold' : 'normal',
+            color: theme.colors.primaryTextLight,
+          }}
           checked={isRememberPassword}
-          checkedColor={COLORS.darkPink}
+          checkedColor={theme.colors.primary}
           onPress={() => dispatch(rememberPassword())}
         />
         <TouchableOpacity
           style={{position: 'absolute', right: 0, marginRight: SIZES.padding}}>
-          <Text style={styles.forgotPassText}>Quên mật khẩu?</Text>
+          <Text
+            style={{...styles.forgotPassText, color: theme.colors.primaryText}}>
+            Quên mật khẩu?
+          </Text>
         </TouchableOpacity>
       </View>
       <TouchableOpacity
-        style={styles.loginButton}
+        style={{
+          ...styles.loginButton,
+          backgroundColor: theme.colors.primaryBackgroundLight,
+          shadowColor: theme.colors.secondaryBackgroundLight,
+        }}
         onPress={() => onPressLogin()}>
-        <Text style={styles.loginText}>ĐĂNG NHẬP</Text>
+        <Text
+          style={{
+            ...styles.loginText,
+            color: theme.colors.secondaryBackgroundLight,
+          }}>
+          ĐĂNG NHẬP
+        </Text>
       </TouchableOpacity>
       <View style={styles.register}>
-        <Text>Bạn chưa có tài khoản?</Text>
+        <Text style={{color: theme.colors.primaryText}}>
+          Bạn chưa có tài khoản?
+        </Text>
         <TouchableOpacity style={{marginLeft: SIZES.padding}}>
           <Text
-            style={{textDecorationLine: 'underline'}}
+            style={{
+              textDecorationLine: 'underline',
+              color: theme.colors.primaryText,
+            }}
             onPress={() => navigation.navigate('Register')}>
             Đăng ký
           </Text>
@@ -120,7 +166,6 @@ export default ShanectLoginForm;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.white,
     paddingHorizontal: SIZES.padding * 2,
     // paddingTop: SIZES.padding * 2,
     paddingBottom: SIZES.padding * 4,
@@ -129,7 +174,6 @@ const styles = StyleSheet.create({
     right: 0,
   },
   textInput: {
-    backgroundColor: COLORS.white,
     borderRadius: SIZES.radius,
     marginVertical: SIZES.padding / 2,
   },
@@ -144,17 +188,13 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   checkBox: {
-    backgroundColor: COLORS.white,
-    borderColor: COLORS.white,
     padding: 0,
   },
   loginButton: {
-    backgroundColor: COLORS.white,
     borderRadius: SIZES.radius,
     paddingVertical: SIZES.padding,
     marginHorizontal: SIZES.padding * 2,
     alignItems: 'center',
-    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 3,
@@ -165,7 +205,6 @@ const styles = StyleSheet.create({
   },
   loginText: {
     ...FONTS.body3,
-    color: COLORS.black,
     fontWeight: 'bold',
   },
   forgotPassText: {
