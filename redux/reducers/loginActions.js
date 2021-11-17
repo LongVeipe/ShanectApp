@@ -1,4 +1,4 @@
-import {ACTION_TYPES} from '../../constants';
+import {ACTION_TYPES, BASE_URL} from '../../constants';
 import callApi from '../../utils/apiCaller';
 import axios from 'axios';
 
@@ -39,14 +39,14 @@ export function loginByShanect(username, password) {
   return async dispatch =>
     axios({
       method: 'POST',
-      url: 'http://192.168.1.15:9000/api/users/login',
+      baseURL: BASE_URL,
+      url: '/users/login',
       data: {
         username: username,
         password: password,
       },
     })
       .then(res => {
-        console.log(res.data);
         dispatch({
           type: ACTION_TYPES.LOGIN_BY_SHANECT,
           payload: {
@@ -57,10 +57,10 @@ export function loginByShanect(username, password) {
       .catch(err => {
         dispatch({
           type: ACTION_TYPES.ERROR_LOGIN,
-          payload:{
+          payload: {
             errorLogin: err,
-          }
-        })
+          },
+        });
       });
   // callApi('users/login', 'POST', {
   //   username: username,

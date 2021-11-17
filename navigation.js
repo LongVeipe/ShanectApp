@@ -5,6 +5,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import {Login, Register, Splash, MainTabs} from './screens';
 import configureStore from './redux/store';
 import {Provider} from 'react-redux';
+import Toast from 'react-native-toast-message'
 import {Provider as PaperProvider, DarkTheme as PaperDarkTheme, DefaultTheme as PaperDefaultTheme} from 'react-native-paper';
 import { COLORS, SIZES, DARK_THEME, LIGHT_THEME, COLOR_OPTIONS } from './constants';
 
@@ -53,6 +54,7 @@ const RootNavigation = () => {
             <Stack.Screen name="MainTabs" component={MainTabs}/>
           </Stack.Navigator>
         </NavigationContainer>
+        <Toast/>
       </PaperProvider>
     </Provider>
   );

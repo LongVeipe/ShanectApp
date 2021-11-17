@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -15,6 +15,7 @@ import {
 import Animated, {interpolate, Extrapolate} from 'react-native-reanimated';
 import {TapGestureHandler} from 'react-native-gesture-handler';
 import axios from 'axios';
+import Toast from 'react-native-toast-message'
 import {useTheme} from '@react-navigation/native';
 
 const ShanectLoginForm = ({navigation}) => {
@@ -24,6 +25,7 @@ const ShanectLoginForm = ({navigation}) => {
   const isRememberPassword = useSelector(
     state => state.loginReducer.isRememberPassword,
   );
+  const errorLogin = useSelector(state=>state.loginReducer.errorLogin)
   const loginResponse = useSelector(state => state.loginReducer.loginResponse);
   const username = useSelector(state => state.loginReducer.username);
   const password = useSelector(state => state.loginReducer.password);
@@ -52,6 +54,24 @@ const ShanectLoginForm = ({navigation}) => {
   const onChangePassword = text => {
     dispatch(changePassword(text));
   };
+
+  useEffect(()=>{
+    if(errorLogin)
+    {
+      Toast.show({
+        type: 'error',
+        text1: 'Lỗi',
+        text2: 'Sai tài khoản hoặc mật khẩu'
+      })
+    }
+  }, [errorLogin])
+
+  useEffect(()=>{
+    if(loginResponse)
+    {
+      navigation.replace('MainTabs')
+    }
+  }, [loginResponse])
 
   return (
     <Animated.View

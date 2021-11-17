@@ -18,7 +18,7 @@ let loginReducer = (state = defaultState, action) => {
     case ACTION_TYPES.LOGIN_BY_SHANECT:
       newState={
         ...state,
-        loginResponse: action.loginResponse,
+        loginResponse: action.payload.loginResponse,
       }
       break;
     case ACTION_TYPES.LOGIN_BY_FACEBOOK:
