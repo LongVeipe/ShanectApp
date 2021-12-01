@@ -30,10 +30,10 @@ const Support = () => {
       <View
         style={{
           ...styles.scrollView,
-          backgroundColor: theme.colors.background,
+          backgroundColor: theme.colors.primaryBackground,
         }}>
         <SupportPosts />
-        <Animated.View style={{...styles.filter, backgroundColor: theme.colors.background, transform: [{translateY: filterTrans}]}}>
+        <Animated.View style={{...styles.filter, backgroundColor: theme.colors.primaryBackground, transform: [{translateY: filterTrans}]}}>
           <SupportCategories />
           <SupportFilter />
         </Animated.View>

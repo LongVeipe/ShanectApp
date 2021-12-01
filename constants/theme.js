@@ -32,9 +32,11 @@ export const COLORS = {
 export const DARK_THEME = {
   primaryBackground: '#242424',
   primaryBackgroundLight: '#3a3a3a',
+  primaryBackgroundDark: '#1a1a1a',
 
   secondaryBackground: '#ffffff',
-  secondaryBackgroundLight: '#f7f7f7',
+  secondaryBackgroundLight: '#ededed',
+  secondaryBackgroundDark: '#dadada',
 
   primaryText: '#ffffff',
   primaryTextLight: '#f7f7f7',
@@ -44,11 +46,13 @@ export const DARK_THEME = {
   error: '#ed2020'
 };
 export const LIGHT_THEME = {
-  primaryBackground: '#f7f7f7',
+  primaryBackground: '#ededed',
   primaryBackgroundLight: '#ffffff',
+  primaryBackgroundDark: '#dadada',
 
   secondaryBackground: '#3d3d3d',
   secondaryBackgroundLight: '#797979',
+  secondaryBackgroundDark: '#292929',
 
   primaryText: '#3d3d3d',
   primaryTextLight: '#797979',

@@ -1,21 +1,38 @@
-import {useTheme} from '@react-navigation/native';
-import React from 'react';
+import {useTheme, useNavigation} from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {COLORS, images, SIZES} from '../../constants';
+import {COLORS, DEFINES, images, SIZES} from '../../constants';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MainHeader = () => {
+  const navigation = useNavigation();
   const theme = useTheme();
+  const [accountInfo, setAccountInfo] = useState(null)
+  useEffect(()=>{
+    getAccountInfo();
+  }, [])
+  const getAccountInfo = async() => {
+    try{
+      const value = await AsyncStorage.getItem(DEFINES.AS_LOGIN_RESPONSE)
+      if(value){
+        setAccountInfo(JSON.parse(value))
+      }
+    }
+    catch(e){
+      console.log('error read AsyncStorage' + e);
+    }
+  }
   return (
     <LinearGradient
       style={{...styles.container}}
       colors={[COLORS.primary, COLORS.darkPink]}>
-      <TouchableOpacity style={{...styles.avatarButton}}>
+      <TouchableOpacity style={{...styles.avatarButton}} onPress={()=>navigation.navigate('Profile')}>
         <Image
           source={{
-            uri: 'https://reactnativecode.com/wp-content/uploads/2017/05/react_thumb_install.png',
+            uri:accountInfo? accountInfo.user.avatar: 'https://simg.nicepng.com/png/small/138-1388174_login-account-icon.png',
           }}
           style={{...styles.avatar}}
         />

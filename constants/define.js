@@ -3,6 +3,7 @@ const GOOGLE = "google"
 const FACEBOOK = "facebook"
 const SUPPORT_FILTER_HEIGHT = 101
 const BOTTOM_TABS_HEIGHT = 80
+const AS_LOGIN_RESPONSE = 'AS_LOGIN_RESPONSE'
 
 export default{
     APP_NAME,
@@ -10,4 +11,5 @@ export default{
     FACEBOOK,
     SUPPORT_FILTER_HEIGHT,
     BOTTOM_TABS_HEIGHT,
+    AS_TOKEN,
 }

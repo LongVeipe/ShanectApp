@@ -2,7 +2,7 @@ import {NavigationContainer, DefaultTheme as NavigationDefaultTheme, DarkTheme a
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {Login, Register, Splash, MainTabs} from './screens';
+import {Login, Register, Splash, MainTabs, Profile} from './screens';
 import configureStore from './redux/store';
 import {Provider} from 'react-redux';
 import Toast from 'react-native-toast-message'
@@ -26,6 +26,8 @@ const navigationDefaultTheme={
     ...NavigationDefaultTheme.colors,
     ...LIGHT_THEME,
     ...COLOR_OPTIONS.pink,
+    background: LIGHT_THEME.primaryBackground,
+    text: LIGHT_THEME.primaryText,
   },
 }
 const navigationDarkTheme={
@@ -34,6 +36,8 @@ const navigationDarkTheme={
     ...NavigationDarkTheme.colors,
     ...DARK_THEME,
     ...COLOR_OPTIONS.pink,
+    background: DARK_THEME.primaryBackground,
+    text: DARK_THEME.primaryText,
   }
 }
 
@@ -47,11 +51,12 @@ const RootNavigation = () => {
               gestureEnabled: true,
               headerShown: false,
             }}
-            initialRouteName={'Login'}>
+            initialRouteName={'MainTabs'}>
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Splash" component={Splash} />
             <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="MainTabs" component={MainTabs}/>
+            <Stack.Screen name='Profile' component={Profile}/>
           </Stack.Navigator>
         </NavigationContainer>
         <Toast/>

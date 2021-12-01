@@ -60,7 +60,7 @@ const MainTabs = ({navigation}) => {
             right: SIZES.padding * 2,
             bottom: SIZES.padding*2,
             borderRadius: SIZES.radius,
-            backgroundColor: theme.colors.primaryBackgroundLight,
+            backgroundColor: theme.colors.primaryBackground,
             height: 60,
             transform:[{translateY: tabsTrans}]
           },

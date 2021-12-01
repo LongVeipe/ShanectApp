@@ -14,6 +14,13 @@ import {
 
 const SupportFilter = () => {
   const theme = useTheme();
+  const {
+    primaryBackground,
+    primaryBackgroundLight,
+    secondaryBackgroundLight,
+    primaryTextLight,
+    primaryText,
+  } = theme.colors;
   const dispatch = useDispatch();
   const selectedCategory = useSelector(
     state => state.supportReducer.selectedCategory,
@@ -60,14 +67,34 @@ const SupportFilter = () => {
         <TextInput
           mode="outlined"
           placeholder="Tìm kiếm người hỗ trợ..."
-          style={{...styles.textInput}}
-          left={<TextInput.Icon name="account-search" style={{opacity: 0.7}} />}
-          right={<TextInput.Icon name="close" style={{opacity: 0.7}} />}
+          style={{...styles.textInput, backgroundColor: primaryBackgroundLight}}
+          left={
+            <TextInput.Icon
+              name="account-search"
+              style={{opacity: 0.7}}
+              color={primaryTextLight}
+            />
+          }
+          right={
+            <TextInput.Icon
+              name="close"
+              style={{opacity: 0.7}}
+              color={primaryTextLight}
+            />
+          }
+          dense={true}
+          outlineColor={secondaryBackgroundLight}
+          theme={{
+            colors: {
+              text: theme.colors.primaryTextLight,
+              placeholder: theme.colors.primaryTextLight,
+            },
+          }}
         />
         <TouchableOpacity
           style={{...styles.checkList}}
           onPress={onExpandFilter}>
-          <MaterialCommunityIcons name="format-list-checks" size={30} />
+          <MaterialCommunityIcons name="format-list-checks" size={30} color={primaryTextLight}/>
         </TouchableOpacity>
       </View>
 
@@ -92,11 +119,17 @@ const SupportFilter = () => {
                 setOpen={setOpen}
                 setValue={setValue}
                 setItems={setItems}
-                style={{backgroundColor: theme.colors.background}}
+                style={{backgroundColor: theme.colors.primaryBackgroundLight, borderWidth: 0,}}
                 placeholder="Tỉnh, thành"
+                labelStyle={{color: primaryText}}
+                textStyle={{color: primaryText}}
+                placeholderStyle={{color: primaryText}}
+                arrowIconStyle={{tintColor: primaryText}}
+                listItemContainerStyle={{backgroundColor: primaryBackgroundLight}}
+                tickIconStyle={{tintColor: primaryText}}
               />
             </View>
-            <View style={{flex: 1, paddingHorizontal: SIZES.padding/2}}>
+            <View style={{flex: 1, paddingHorizontal: SIZES.padding / 2}}>
               <DropDownPicker
                 open={open}
                 value={value}
@@ -104,8 +137,14 @@ const SupportFilter = () => {
                 setOpen={setOpen}
                 setValue={setValue}
                 setItems={setItems}
-                style={{backgroundColor: theme.colors.background}}
+                style={{backgroundColor: primaryBackgroundLight, borderWidth: 0,}}
                 placeholder="Quận, huyện"
+                labelStyle={{color: primaryText}}
+                textStyle={{color: primaryText}}
+                placeholderStyle={{color: primaryText}}
+                arrowIconStyle={{tintColor: primaryText}}
+                listItemContainerStyle={{backgroundColor: primaryBackgroundLight}}
+                tickIconStyle={{tintColor: primaryText}}
               />
             </View>
             <View style={{flex: 1, paddingLeft: SIZES.padding}}>
@@ -116,8 +155,14 @@ const SupportFilter = () => {
                 setOpen={setOpen}
                 setValue={setValue}
                 setItems={setItems}
-                style={{backgroundColor: theme.colors.background}}
+                style={{backgroundColor: primaryBackgroundLight, borderWidth: 0,}}
                 placeholder={`Xã,\nPhường`}
+                labelStyle={{color: primaryText}}
+                textStyle={{color: primaryText}}
+                placeholderStyle={{color: primaryText}}
+                arrowIconStyle={{tintColor: primaryText}}
+                listItemContainerStyle={{backgroundColor: primaryBackgroundLight}}
+                tickIconStyle={{tintColor: primaryTextLight}}
               />
             </View>
           </View>
@@ -138,7 +183,6 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
-    height: 40,
   },
   checkList: {
     marginLeft: SIZES.padding,

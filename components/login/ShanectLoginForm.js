@@ -2,9 +2,10 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import * as Keychain from 'react-native-keychain';
 import {CheckBox, Input} from 'react-native-elements';
 import {TextInput, HelperText} from 'react-native-paper';
-import {COLORS, FONTS, SIZES} from '../../constants';
+import {COLORS, FONTS, SIZES, DEFINES} from '../../constants';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {
   rememberPassword,
@@ -15,8 +16,9 @@ import {
 import Animated, {interpolate, Extrapolate} from 'react-native-reanimated';
 import {TapGestureHandler} from 'react-native-gesture-handler';
 import axios from 'axios';
-import Toast from 'react-native-toast-message'
+import Toast from 'react-native-toast-message';
 import {useTheme} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ShanectLoginForm = ({navigation}) => {
   const theme = useTheme();
@@ -25,7 +27,7 @@ const ShanectLoginForm = ({navigation}) => {
   const isRememberPassword = useSelector(
     state => state.loginReducer.isRememberPassword,
   );
-  const errorLogin = useSelector(state=>state.loginReducer.errorLogin)
+  const errorLogin = useSelector(state => state.loginReducer.errorLogin);
   const loginResponse = useSelector(state => state.loginReducer.loginResponse);
   const username = useSelector(state => state.loginReducer.username);
   const password = useSelector(state => state.loginReducer.password);
@@ -55,23 +57,67 @@ const ShanectLoginForm = ({navigation}) => {
     dispatch(changePassword(text));
   };
 
-  useEffect(()=>{
-    if(errorLogin)
-    {
+  useEffect(() => {
+    if (errorLogin) {
       Toast.show({
         type: 'error',
-        text1: 'Lỗi',
-        text2: 'Sai tài khoản hoặc mật khẩu'
-      })
+        text1: 'Lỗi đăng nhập',
+        text2: 'Sai tài khoản hoặc mật khẩu',
+      });
     }
-  }, [errorLogin])
+  }, [errorLogin]);
 
-  useEffect(()=>{
-    if(loginResponse)
-    {
-      navigation.replace('MainTabs')
+  useEffect(() => {
+    // async function getKeychainData() {
+    //   try {
+    //     // Retreive the credentials
+    //     const credentials = await Keychain.getGenericPassword();
+    //     if (credentials) {
+    //       console.log(
+    //         'Credentials successfully loaded for user ' + credentials.username, credentials.password,
+    //       );
+    //     } else {
+    //       console.log('No credentials stored');
+    //     }
+    //   } catch (error) {
+    //     console.log("Keychain couldn't be accessed!", error);
+    //   }
+    //   await Keychain.resetGenericPassword();
+    // }
+    // getKeychainData();
+    async function getData(){
+      try{
+        const value = await AsyncStorage.getItem(DEFINES.AS_LOGIN_RESPONSE)
+        if(value){
+          console.log(value)
+        }
+      }
+      catch(e){
+        console.log(e);
+      }
     }
-  }, [loginResponse])
+    getData();
+  }, []);
+
+  const loginSuccess = async res => {
+    try {
+      await AsyncStorage.setItem(
+        DEFINES.AS_TOKEN,
+        JSON.stringify(res),
+      );
+      await Keychain.setGenericPassword(username, password);
+      if (isRememberPassword) {
+      }
+      navigation.replace('MainTabs');
+    } catch (err) {
+      console.log(`error storing login response: ${err}`);
+    }
+  };
+  useEffect(() => {
+    if (loginResponse) {
+      loginSuccess(loginResponse);
+    }
+  }, [loginResponse]);
 
   return (
     <Animated.View

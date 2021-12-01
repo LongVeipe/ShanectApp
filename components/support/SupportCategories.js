@@ -51,7 +51,7 @@ const SupportCategories = () => {
           name={category.icon}
           size={20}
           color={
-            selectedCategory?._id == category._id && theme.colors.primaryBold
+            selectedCategory?._id == category._id? theme.colors.primaryTextLight: theme.colors.primaryTextLight
           }
         />
       </View>
@@ -61,7 +61,7 @@ const SupportCategories = () => {
           paddingLeft: SIZES.padding / 2,
           fontWeight: 'bold',
           color:
-            selectedCategory?._id == category._id && theme.colors.primaryBold,
+            selectedCategory?._id == category._id?theme.colors.primaryBold:theme.colors.primaryTextLight,
         }}>
         {category.name}
       </Text>

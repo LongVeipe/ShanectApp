@@ -12,6 +12,8 @@ target 'Shanect' do
     :hermes_enabled => false
   )
 
+  pod 'RNKeychain', :path => '../node_modules/react-native-keychain'
+
   target 'ShanectTests' do
     inherit! :complete
     # Pods for testing
