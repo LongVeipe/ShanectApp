@@ -1,5 +1,5 @@
 import {useTheme} from '@react-navigation/native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -20,7 +20,7 @@ const AVATAR_SIZE = SIZES.width / 2.5;
 const DATA = [0, 1, 2, 3, 4]
 const identity = (v) => v + ''
 
-const Profile = () => {
+const Profile = ({navigation, route}) => {
   const renderItem = React.useCallback(({ index }) => {
     return (
       <View style={[styles.box, index % 2 === 0 ? styles.boxB : styles.boxA]} />

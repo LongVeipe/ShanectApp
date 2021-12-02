@@ -1,5 +1,5 @@
 import {useTheme} from '@react-navigation/native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {SIZES, images, FONTS, icons} from '../../constants';

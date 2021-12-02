@@ -68,6 +68,11 @@ const ShanectLoginForm = ({navigation}) => {
   }, [errorLogin]);
 
   useEffect(() => {
+    if (loginResponse) {
+      loginSuccess(loginResponse);
+    }
+  }, [loginResponse]);
+  useEffect(() => {
     // async function getKeychainData() {
     //   try {
     //     // Retreive the credentials
@@ -87,7 +92,7 @@ const ShanectLoginForm = ({navigation}) => {
     // getKeychainData();
     async function getData(){
       try{
-        const value = await AsyncStorage.getItem(DEFINES.AS_LOGIN_RESPONSE)
+        const value = await AsyncStorage.getItem(DEFINES.AS_TOKEN)
         if(value){
           console.log(value)
         }
@@ -103,7 +108,7 @@ const ShanectLoginForm = ({navigation}) => {
     try {
       await AsyncStorage.setItem(
         DEFINES.AS_TOKEN,
-        JSON.stringify(res),
+        res.token
       );
       await Keychain.setGenericPassword(username, password);
       if (isRememberPassword) {
@@ -113,11 +118,6 @@ const ShanectLoginForm = ({navigation}) => {
       console.log(`error storing login response: ${err}`);
     }
   };
-  useEffect(() => {
-    if (loginResponse) {
-      loginSuccess(loginResponse);
-    }
-  }, [loginResponse]);
 
   return (
     <Animated.View

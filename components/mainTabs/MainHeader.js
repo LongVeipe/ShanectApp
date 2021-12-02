@@ -1,38 +1,69 @@
 import {useTheme, useNavigation} from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {COLORS, DEFINES, images, SIZES} from '../../constants';
+import {BASE_URL, COLORS, DEFINES, images, SIZES} from '../../constants';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 const MainHeader = () => {
   const navigation = useNavigation();
   const theme = useTheme();
-  const [accountInfo, setAccountInfo] = useState(null)
-  useEffect(()=>{
-    getAccountInfo();
-  }, [])
-  const getAccountInfo = async() => {
-    try{
-      const value = await AsyncStorage.getItem(DEFINES.AS_LOGIN_RESPONSE)
-      if(value){
-        setAccountInfo(JSON.parse(value))
-      }
-    }
-    catch(e){
+  const [accountInfo, setAccountInfo] = useState(null);
+
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getAccountInfo()
+    });
+
+    return () => {
+      unsubscribe;
+    };
+  }, []);
+
+
+  const getAccountInfo = async () => {
+    let value = '';
+    try {
+      value = await AsyncStorage.getItem(DEFINES.AS_TOKEN);
+    } catch (e) {
       console.log('error read AsyncStorage' + e);
     }
-  }
+    if (value != '') {
+      axios({
+        method: 'GET',
+        baseURL: BASE_URL,
+        url: '/users/me',
+        headers: {
+          'shanect-access-token': `${value}`,
+        },
+      })
+        .then(res => {
+          setAccountInfo(res.data);
+        })
+        .catch(err =>
+          console.log(
+            'MainHeader: ',
+            JSON.stringify(err.response.config.headers),
+          ),
+        );
+    }
+  };
   return (
     <LinearGradient
       style={{...styles.container}}
       colors={[COLORS.primary, COLORS.darkPink]}>
-      <TouchableOpacity style={{...styles.avatarButton}} onPress={()=>navigation.navigate('Profile')}>
+      <TouchableOpacity
+        style={{...styles.avatarButton}}
+        onPress={() => navigation.navigate('Profile', {accountInfo,})}>
         <Image
           source={{
-            uri:accountInfo? accountInfo.user.avatar: 'https://simg.nicepng.com/png/small/138-1388174_login-account-icon.png',
+            uri: accountInfo
+              ? accountInfo.user.avatar
+              : 'https://simg.nicepng.com/png/small/138-1388174_login-account-icon.png',
           }}
           style={{...styles.avatar}}
         />
@@ -68,7 +99,6 @@ const styles = StyleSheet.create({
     padding: SIZES.padding * 2,
   },
   avatarButton: {
-    backgroundColor: 'red',
     height: 50,
     width: 50,
     borderRadius: 25,
@@ -79,7 +109,7 @@ const styles = StyleSheet.create({
   },
   appName: {
     flex: 1,
-    paddingHorizontal: SIZES.padding*4
+    paddingHorizontal: SIZES.padding * 4,
   },
   messageButton: {
     width: 35,

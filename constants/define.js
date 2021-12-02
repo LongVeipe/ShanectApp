@@ -3,7 +3,7 @@ const GOOGLE = "google"
 const FACEBOOK = "facebook"
 const SUPPORT_FILTER_HEIGHT = 101
 const BOTTOM_TABS_HEIGHT = 80
-const AS_LOGIN_RESPONSE = 'AS_LOGIN_RESPONSE'
+const AS_TOKEN = 'AS_TOKEN'
 
 export default{
     APP_NAME,

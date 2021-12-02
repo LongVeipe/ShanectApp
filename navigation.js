@@ -50,6 +50,8 @@ const RootNavigation = () => {
             screenOptions={{
               gestureEnabled: true,
               headerShown: false,
+
+
             }}
             initialRouteName={'MainTabs'}>
             <Stack.Screen name="Login" component={Login} />
