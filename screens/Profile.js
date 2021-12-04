@@ -1,5 +1,5 @@
 import {useTheme} from '@react-navigation/native';
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,55 +10,109 @@ import {
   ScrollView,
   FlatList,
 } from 'react-native';
-import {Tabs} from 'react-native-collapsible-tab-view'
-import {FONTS, images, SIZES} from '../constants';
+import {MaterialTabBar, Tabs} from 'react-native-collapsible-tab-view';
+import {FONTS, images, SIZES, DEFINES, BASE_URL} from '../constants';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {HeaderProfile, BasicInfomation} from '../components/profile';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  HeaderProfile,
+  BasicInfomation,
+  SupportListHeader,
+} from '../components/profile';
+import {TabBar} from 'react-native-tab-view';
+import {changeAccountInfo} from '../redux/reducers/profileActions'
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 
 const AVATAR_SIZE = SIZES.width / 2.5;
 
-const DATA = [0, 1, 2, 3, 4]
-const identity = (v) => v + ''
+const DATA = [0, 1, 2, 3, 4];
+const identity = v => v + '';
 
 const Profile = ({navigation, route}) => {
-  const renderItem = React.useCallback(({ index }) => {
+  const dispatch = useDispatch();
+  const accountInfo = useSelector(state=>state.profileReducer.accountInfo)
+  useEffect(() => {
+    getAccountInfo();
+  }, []);
+  const getAccountInfo = async () => {
+    let value = '';
+    try {
+      value = await AsyncStorage.getItem(DEFINES.AS_TOKEN);
+    } catch (e) {
+      console.log('error read AsyncStorage' + e);
+    }
+    if (value != '') {
+      axios({
+        method: 'GET',
+        baseURL: BASE_URL,
+        url: '/users/me',
+        headers: {
+          'shanect-access-token': `${value}`,
+        },
+      })
+        .then(res => {
+          dispatch(changeAccountInfo(res.data));
+        })
+        .catch(err =>
+          console.log(
+            'MainHeader: ',
+            JSON.stringify(err.response.config.headers),
+          ),
+        );
+    }
+  };
+  const {
+    primaryBackground,
+    secondaryBackground,
+    secondaryBackgroundLight,
+    primaryBackgroundLight,
+    primaryBackgroundDark,
+    secondaryBackgroundDark,
+    primaryText,
+    primaryLight,
+    primaryFaint,
+    primary,
+    primaryBold,
+  } = useTheme().colors;
+  const renderItem = React.useCallback(({index}) => {
     return (
       <View style={[styles.box, index % 2 === 0 ? styles.boxB : styles.boxA]} />
-    )
-  }, [])
+    );
+  }, []);
   return (
     <SafeAreaView style={{...styles.container}}>
-      
       <Tabs.Container
-        renderHeader={()=><>
-          <HeaderProfile/>
-        </>}
-        headerHeight={100}
-      >
-        <Tabs.Tab
-          name='Support'
-          label='Hỗ trợ'
-        >
+        renderHeader={() => (
+          <>
+            <HeaderProfile />
+          </>
+        )}
+        containerStyle={{backgroundColor: primaryBackground}}
+        headerContainerStyle={{backgroundColor: primaryBackgroundLight}}
+        TabBarComponent={props => (
+          <MaterialTabBar
+            {...props}
+            indicatorStyle={{backgroundColor: primary}}
+            labelStyle={{color: primaryText}}
+          />
+        )}>
+        <Tabs.Tab name="Support" label="Hỗ trợ">
+          <Tabs.FlatList
+            ListHeaderComponent={SupportListHeader}
+            data={DATA}
+            renderItem={renderItem}
+            keyExtractor={identity}
+          />
+        </Tabs.Tab>
+        <Tabs.Tab name="Consult" label="Tư vấn">
           <Tabs.FlatList
             data={DATA}
             renderItem={renderItem}
             keyExtractor={identity}
           />
         </Tabs.Tab>
-        <Tabs.Tab
-          name='Consult'
-          label='Tư vấn'
-        >
-          <Tabs.FlatList
-            data={DATA}
-            renderItem={renderItem}
-            keyExtractor={identity}
-          />
-        </Tabs.Tab>
-        <Tabs.Tab
-          name='Notification'
-          label='Thông báo'
-        >
+        <Tabs.Tab name="Notification" label="Thông báo">
           <Tabs.FlatList
             data={DATA}
             renderItem={renderItem}

@@ -9,14 +9,16 @@ import ImagePicker from 'react-native-image-crop-picker';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSelector, useDispatch } from 'react-redux';
+import {changeAccountInfo} from '../../redux/reducers/profileActions'
 
 const AVATAR_SIZE = SIZES.width / 2.5;
 const HeaderProfile = () => {
-  const [accountInfo, setAccountInfo] = useState(null);
-
-  useEffect(() => {
-    getAccountInfo();
-  }, []);
+  const dispatch = useDispatch();
+  const accountInfo = useSelector(state=>state.profileReducer.accountInfo)
+  // useEffect(() => {
+  //   getAccountInfo();
+  // }, []);
   const {
     primaryBackground,
     secondaryBackground,
@@ -31,33 +33,33 @@ const HeaderProfile = () => {
     primaryBold,
   } = useTheme().colors;
 
-  const getAccountInfo = async () => {
-    let value = '';
-    try {
-      value = await AsyncStorage.getItem(DEFINES.AS_TOKEN);
-    } catch (e) {
-      console.log('error read AsyncStorage' + e);
-    }
-    if (value != '') {
-      axios({
-        method: 'GET',
-        baseURL: BASE_URL,
-        url: '/users/me',
-        headers: {
-          'shanect-access-token': `${value}`,
-        },
-      })
-        .then(res => {
-          setAccountInfo(res.data);
-        })
-        .catch(err =>
-          console.log(
-            'MainHeader: ',
-            JSON.stringify(err.response.config.headers),
-          ),
-        );
-    }
-  };
+  // const getAccountInfo = async () => {
+  //   let value = '';
+  //   try {
+  //     value = await AsyncStorage.getItem(DEFINES.AS_TOKEN);
+  //   } catch (e) {
+  //     console.log('error read AsyncStorage' + e);
+  //   }
+  //   if (value != '') {
+  //     axios({
+  //       method: 'GET',
+  //       baseURL: BASE_URL,
+  //       url: '/users/me',
+  //       headers: {
+  //         'shanect-access-token': `${value}`,
+  //       },
+  //     })
+  //       .then(res => {
+  //         setAccountInfo(res.data);
+  //       })
+  //       .catch(err =>
+  //         console.log(
+  //           'MainHeader: ',
+  //           JSON.stringify(err.response.config.headers),
+  //         ),
+  //       );
+  //   }
+  // };
   async function fetchUserAvatar(avatar) {
     var formData = new FormData();
     const token = await AsyncStorage.getItem(DEFINES.AS_TOKEN);
@@ -78,7 +80,7 @@ const HeaderProfile = () => {
       },
       data: formData,
     })
-      .then(res => setAccountInfo(res.data))
+      .then(res => dispatch(changeAccountInfo(res.data)))
       .catch(err => {
         console.log('Profile Header: ', JSON.stringify(err));
         Toast.show({
@@ -97,7 +99,6 @@ const HeaderProfile = () => {
       includeBase64: false,
     })
       .then(image => {
-        //console.log(`data:${image.mime};base64,${image.data}`)
         fetchUserAvatar(image);
       })
       .catch(err => console.log('Profile Header: ', err));
@@ -211,7 +212,6 @@ const HeaderProfile = () => {
           Thay đổi thông tin cá nhân
         </Text>
       </TouchableOpacity>
-      <Divider color={primaryText} />
     </View>
   );
 };

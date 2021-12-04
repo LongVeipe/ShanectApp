@@ -11,7 +11,7 @@ let defaultState = {
   password: "",
   errorLogin: null,
 };
-
+ 
 let loginReducer = (state = defaultState, action) => {
   let newState = {...state};
   switch (action.type) {
@@ -60,7 +60,7 @@ let loginReducer = (state = defaultState, action) => {
         errorLogin: action.payload.errorLogin,
       }
     default:
-      break;
+      return state;
   }
 
   return newState;
