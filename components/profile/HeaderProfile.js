@@ -1,13 +1,22 @@
 import {useTheme} from '@react-navigation/native';
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {SIZES, images, FONTS, icons} from '../../constants';
+import {SIZES, images, FONTS, icons, BASE_URL, DEFINES} from '../../constants';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Divider} from 'react-native-elements';
+import ImagePicker from 'react-native-image-crop-picker';
+import axios from 'axios';
+import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AVATAR_SIZE = SIZES.width / 2.5;
 const HeaderProfile = () => {
+  const [accountInfo, setAccountInfo] = useState(null);
+
+  useEffect(() => {
+    getAccountInfo();
+  }, []);
   const {
     primaryBackground,
     secondaryBackground,
@@ -22,6 +31,77 @@ const HeaderProfile = () => {
     primaryBold,
   } = useTheme().colors;
 
+  const getAccountInfo = async () => {
+    let value = '';
+    try {
+      value = await AsyncStorage.getItem(DEFINES.AS_TOKEN);
+    } catch (e) {
+      console.log('error read AsyncStorage' + e);
+    }
+    if (value != '') {
+      axios({
+        method: 'GET',
+        baseURL: BASE_URL,
+        url: '/users/me',
+        headers: {
+          'shanect-access-token': `${value}`,
+        },
+      })
+        .then(res => {
+          setAccountInfo(res.data);
+        })
+        .catch(err =>
+          console.log(
+            'MainHeader: ',
+            JSON.stringify(err.response.config.headers),
+          ),
+        );
+    }
+  };
+  async function fetchUserAvatar(avatar) {
+    var formData = new FormData();
+    const token = await AsyncStorage.getItem(DEFINES.AS_TOKEN);
+    formData.append('avatar', {
+      type: avatar.mime || 'image/jpeg',
+      uri: avatar.path,
+      name: new Date() + '_profile',
+    });
+
+    axios({
+      method: 'PUT',
+      baseURL: BASE_URL,
+      url: '/users/avatar',
+      headers: {
+        'shanect-access-token': token,
+        'Content-Type': 'multipart/form-data',
+        // authentication: token,
+      },
+      data: formData,
+    })
+      .then(res => setAccountInfo(res.data))
+      .catch(err => {
+        console.log('Profile Header: ', JSON.stringify(err));
+        Toast.show({
+          type: 'error',
+          text1: 'Lỗi',
+          text2: 'Tạm thời không thể thay đổi ảnh đại diện',
+        });
+      });
+  }
+  function onSelectAvatar() {
+    ImagePicker.openPicker({
+      compressImageMaxHeight: 400,
+      compressImageMaxHeight: 400,
+      cropping: false,
+      freeStyleCropEnabled: true,
+      includeBase64: false,
+    })
+      .then(image => {
+        //console.log(`data:${image.mime};base64,${image.data}`)
+        fetchUserAvatar(image);
+      })
+      .catch(err => console.log('Profile Header: ', err));
+  }
   const BasicInfoItem = ({icon, title, contain}) => {
     return (
       <View
@@ -50,7 +130,9 @@ const HeaderProfile = () => {
     );
   };
   return (
-    <View style={{backgroundColor: primaryBackgroundLight}} pointerEvents='box-none'>
+    <View
+      style={{backgroundColor: primaryBackgroundLight}}
+      pointerEvents="box-none">
       <View style={{...styles.cover}}>
         <TouchableOpacity style={{flex: 1}}>
           <Image
@@ -79,8 +161,13 @@ const HeaderProfile = () => {
             backgroundColor: secondaryBackgroundLight,
           }}>
           <Image
-            source={images.logo}
-            style={{height: null, width: null, flex: 1}}
+            source={{uri: accountInfo ? accountInfo.user.avatar : 'aaaa'}}
+            style={{
+              height: null,
+              width: null,
+              flex: 1,
+              borderRadius: AVATAR_SIZE / 2,
+            }}
             resizeMode="cover"
           />
         </TouchableOpacity>
@@ -91,7 +178,8 @@ const HeaderProfile = () => {
             backgroundColor: primaryBackground,
             right: 0,
             bottom: 0,
-          }}>
+          }}
+          onPress={onSelectAvatar}>
           <FontAwesome name="camera" size={20} color={secondaryBackground} />
         </TouchableOpacity>
       </View>
